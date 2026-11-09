@@ -3,27 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Tarjeta Roja Directa - Fútbol en Vivo HD</title>
+  <title>SportHub Pro - Deportes en Directo HD</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background-color: #0b0e14; color: #e2e8f0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: #06090e; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
 
-    .tr-header { background: #d32f2f; }
-    .tr-nav-item { color: #ffffff; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .tr-nav-item:hover { color: #fef08a; }
+    /* Estilo Negro, Blanco y Azul */
+    .sh-header { background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); border-bottom: 2px solid #2563eb; }
+    .sh-nav-item { color: #ffffff; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .sh-nav-item:hover { color: #60a5fa; }
 
-    .tr-card { background-color: #121722; border: 1px solid #1e2638; border-radius: 8px; transition: all 0.15s ease; }
-    .tr-card:hover { border-color: #ef4444; }
-    .tr-card.active { border-color: #ef4444; background-color: #1a2233; }
+    .sh-card { background-color: #0f172a; border: 1px solid #1e293b; border-radius: 10px; transition: all 0.15s ease; }
+    .sh-card:hover { border-color: #3b82f6; }
+    .sh-card.active { border-color: #3b82f6; background-color: #162032; }
 
-    .filter-btn { background-color: #1a2233; color: #cbd5e1; border: 1px solid #27354d; }
-    .filter-btn:hover { background-color: #27354d; color: #ffffff; }
-    .filter-btn.active { background-color: #dc2626; color: #ffffff; border-color: #ef4444; font-weight: bold; }
+    .filter-btn { background-color: #0f172a; color: #cbd5e1; border: 1px solid #1e293b; }
+    .filter-btn:hover { background-color: #1e293b; color: #ffffff; }
+    .filter-btn.active { background-color: #2563eb; color: #ffffff; border-color: #3b82f6; font-weight: bold; }
 
-    .btn-red { background-color: #dc2626; color: #ffffff; font-weight: bold; border-radius: 6px; }
-    .btn-red:hover { background-color: #b91c1c; }
+    .btn-blue { background-color: #2563eb; color: #ffffff; font-weight: bold; border-radius: 6px; }
+    .btn-blue:hover { background-color: #1d4ed8; }
+
+    button:focus, input:focus, a:focus { outline: 2px solid #3b82f6 !important; outline-offset: 2px; }
 
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .spinner { animation: spin 1s linear infinite; }
@@ -31,24 +34,27 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between overflow-x-hidden select-none">
 
-  <!-- Header Superior Tarjeta Roja -->
-  <header class="tr-header shadow-md sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
+  <!-- Header Superior Negro y Azul -->
+  <header class="sh-header shadow-xl sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center gap-3">
-        <div class="flex items-center gap-1.5 font-black text-xl text-white tracking-tight cursor-pointer" onclick="fetchAgenda()">
-          <span class="bg-white text-red-700 px-1.5 py-0.5 rounded text-xs">🔴</span>
-          <span>Tarjeta Roja</span>
+        <div class="flex items-center gap-2 font-black text-xl text-white tracking-tight cursor-pointer" onclick="fetchAgenda()">
+          <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-black shadow">LIVE</span>
+          <span>SPORTHUB <span class="text-blue-400 font-normal">PRO</span></span>
         </div>
       </div>
       
       <nav class="hidden md:flex items-center gap-5">
-        <a href="#" class="tr-nav-item text-yellow-300">PROGRAMACIÓN</a>
-        <a href="#" class="tr-nav-item">PARTIDOS DE HOY</a>
-        <a href="#" class="tr-nav-item">CANALES TV</a>
-        <a href="#" class="tr-nav-item">GUÍA & FAQ</a>
+        <a href="#" class="sh-nav-item text-blue-400">PROGRAMACIÓN</a>
+        <a href="#" class="sh-nav-item">PARTIDOS DE HOY</a>
+        <a href="#" class="sh-nav-item">CANALES TV</a>
+        <a href="#" class="sh-nav-item">GUÍA & FAQ</a>
       </nav>
 
-      <span id="clock-spain" class="text-xs font-mono bg-red-900/60 text-white px-2.5 py-1 rounded border border-red-800">🇪🇸 CET: --:--</span>
+      <div class="flex items-center gap-2">
+        <span id="clock-spain" class="text-xs font-mono bg-slate-900 text-blue-300 px-2.5 py-1 rounded border border-blue-900/60">🇪🇸 CET: --:--</span>
+        <button onclick="fetchAgenda()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-2.5 py-1 rounded transition font-bold">↻</button>
+      </div>
     </div>
   </header>
 
@@ -56,12 +62,12 @@
 
     <!-- Zona del Reproductor Integrado -->
     <section id="player-wrapper" class="w-full bg-black rounded-xl overflow-hidden border border-slate-800 shadow-2xl flex flex-col">
-      <div class="bg-[#121722] px-4 py-2.5 border-b border-slate-800 flex justify-between items-center gap-2">
+      <div class="bg-slate-900 px-4 py-2.5 border-b border-slate-800 flex justify-between items-center gap-2">
         <div class="min-w-0">
           <h2 id="player-title" class="text-sm md:text-base font-bold text-white truncate">Selecciona un partido de la agenda</h2>
-          <p id="player-subtitle" class="text-xs text-red-400 truncate">Tarjeta Roja TV - Emisión en Directo</p>
+          <p id="player-subtitle" class="text-xs text-blue-400 truncate">SportHub Pro - Emisión Directa sin Anuncios</p>
         </div>
-        <button onclick="toggleFullscreen()" class="btn-red text-xs px-3 py-1.5 flex items-center gap-1 shrink-0">
+        <button onclick="toggleFullscreen()" class="btn-blue text-xs px-3 py-1.5 flex items-center gap-1 shrink-0 shadow">
           <span>📺</span> <span>Pantalla Completa</span>
         </button>
       </div>
@@ -70,22 +76,22 @@
         <iframe id="iframe-player" class="w-full h-full hidden" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
         
         <div id="loading-spinner" class="absolute inset-0 bg-black/90 backdrop-blur-sm hidden flex flex-col items-center justify-center text-center z-20">
-          <div class="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full spinner mb-3"></div>
-          <p class="text-white text-xs font-semibold">Sintonizando señal de Tarjeta Roja Directa...</p>
+          <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full spinner mb-3"></div>
+          <p class="text-white text-xs font-semibold">Sintonizando emisión en directo por Proxy...</p>
         </div>
 
-        <div id="player-placeholder" class="absolute inset-0 bg-[#0b0e14] flex flex-col items-center justify-center text-center text-slate-400 p-6 z-10">
-          <div class="text-4xl md:text-5xl mb-2 text-red-600">⚽</div>
-          <p class="text-sm md:text-base font-semibold text-white">Programación de Tarjeta Roja Directa</p>
+        <div id="player-placeholder" class="absolute inset-0 bg-[#06090e] flex flex-col items-center justify-center text-center text-slate-400 p-6 z-10">
+          <div class="text-4xl md:text-5xl mb-2 text-blue-500">⚽</div>
+          <p class="text-sm md:text-base font-semibold text-white">Programación Deportiva en Directo</p>
           <p class="text-xs text-slate-400 mt-1">Haz clic en "Ver en Vivo" o en cualquier canal de la lista inferior.</p>
         </div>
       </div>
     </section>
 
-    <!-- Caja de Búsqueda y Categorías exactas de Tarjeta Roja -->
-    <section class="tr-card p-4 flex flex-col gap-3">
-      <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido, equipo o competición (ej. Real Madrid, Barcelona, Liga MX, NBA)..." 
-             class="w-full bg-[#0b0e14] border border-slate-700 text-xs text-white placeholder-slate-400 px-4 py-2.5 rounded-lg focus:outline-none focus:border-red-500">
+    <!-- Buscador y Filtros -->
+    <section class="sh-card p-4 flex flex-col gap-3">
+      <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido, equipo o competición (ej. Real Madrid, Barcelona, NBA, F1)..." 
+             class="w-full bg-[#06090e] border border-slate-700 text-xs text-white placeholder-slate-400 px-4 py-2.5 rounded-lg focus:outline-none focus:border-blue-500">
       
       <div class="flex flex-wrap gap-1.5 text-xs">
         <button onclick="filterSport('ALL', this)" class="filter-btn active px-3 py-1.5 rounded-full transition">⭐ Todos</button>
@@ -99,24 +105,24 @@
       </div>
     </section>
 
-    <!-- Lista de Partidos -->
+    <!-- Parrilla de Partidos -->
     <section class="flex flex-col gap-2">
       <div class="flex justify-between items-center px-1">
-        <h3 class="text-sm font-bold text-amber-400 flex items-center gap-1.5">
-          <span>»</span> Programación de Hoy en Tarjeta Roja TV y Roja Directa
+        <h3 class="text-sm font-bold text-blue-400 flex items-center gap-1.5">
+          <span>»</span> Programación de Hoy en Directo
         </h3>
-        <span id="match-counter" class="text-xs bg-red-950 text-red-400 border border-red-900 px-2.5 py-0.5 rounded-full font-bold">Cargando...</span>
+        <span id="match-counter" class="text-xs bg-blue-950 text-blue-400 border border-blue-900 px-2.5 py-0.5 rounded-full font-bold">Cargando...</span>
       </div>
 
       <div id="matches-list" class="flex flex-col gap-2.5">
-        <div class="text-xs text-slate-500 text-center py-12 tr-card">Cargando eventos de tarjetarojadirect.live...</div>
+        <div class="text-xs text-slate-500 text-center py-12 sh-card">Obteniendo agenda de partidos...</div>
       </div>
     </section>
 
   </main>
 
-  <footer class="bg-[#080a0f] border-t border-slate-900 py-3 text-center text-[11px] text-slate-500">
-    Tarjeta Roja TV Directa &copy; 2026 - Emisión en Directo
+  <footer class="bg-slate-950 border-t border-slate-900 py-3 text-center text-[11px] text-slate-500">
+    SportHub Pro &copy; 2026 - Emisión adaptable para Móvil, PC y Smart TV
   </footer>
 
   <script>
@@ -147,7 +153,7 @@
         allMatches = data.events || [];
         renderMatches();
       } catch (e) {
-        container.innerHTML = '<div class="text-xs text-red-400 text-center py-8 tr-card">Error de conexión. Pulsa en el logo para reintentar.</div>';
+        container.innerHTML = '<div class="text-xs text-red-400 text-center py-8 sh-card">Error de conexión. Pulsa ↻ para reintentar.</div>';
       }
     }
 
@@ -175,25 +181,25 @@
       container.innerHTML = '';
 
       if (filtered.length === 0) {
-        container.innerHTML = '<div class="text-xs text-slate-500 text-center py-12 tr-card">No hay partidos disponibles en esta categoría.</div>';
+        container.innerHTML = '<div class="text-xs text-slate-500 text-center py-12 sh-card">No hay partidos disponibles en esta categoría.</div>';
         return;
       }
 
       filtered.forEach((m) => {
         const card = document.createElement('div');
         const isActive = m.idEvent === activeMatchId;
-        card.className = `tr-card p-3.5 flex flex-col gap-3 ${isActive ? 'active' : ''}`;
+        card.className = `sh-card p-3.5 flex flex-col gap-3 ${isActive ? 'active' : ''}`;
 
         const isLive = m.strTime === 'EN VIVO' || m.strTime === 'En Vivo';
         const timeBadge = isLive 
-          ? '<span class="text-red-500 font-bold text-xs animate-pulse">🔴 EN VIVO</span>'
-          : `<span class="text-amber-400 font-bold text-sm font-mono">${escapeHTML(m.strTime)}</span> <span class="text-[10px] text-slate-500">Local</span>`;
+          ? '<span class="text-blue-400 font-bold text-xs animate-pulse">🔴 EN VIVO</span>'
+          : `<span class="text-blue-400 font-bold text-sm font-mono">${escapeHTML(m.strTime)}</span> <span class="text-[10px] text-slate-500">Local</span>`;
 
         let channelBtns = '';
         if (m.options && m.options.length > 0) {
           channelBtns = m.options.map((opt) => `
             <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(opt.url)}')" 
-                    class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-3 py-1.5 rounded flex items-center gap-1.5 border border-slate-700">
+                    class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-3 py-1.5 rounded flex items-center gap-1.5 border border-slate-700 transition">
               <span>▶</span> <span>${escapeHTML(opt.name)}</span>
             </button>
           `).join('');
@@ -204,7 +210,7 @@
             <div class="flex items-center gap-3">
               <div class="w-16 text-center leading-tight shrink-0">${timeBadge}</div>
               <div>
-                <div class="text-xs font-bold text-red-500 uppercase tracking-wider">${escapeHTML(m.sport)}</div>
+                <div class="text-xs font-bold text-blue-400 uppercase tracking-wider">${escapeHTML(m.sport)}</div>
                 <div class="text-sm font-extrabold text-white">${escapeHTML(m.strEvent)}</div>
               </div>
             </div>
@@ -213,14 +219,14 @@
               <button onclick="toggleMatchChannels('${m.idEvent}')" class="bg-slate-800 text-slate-300 text-xs px-3 py-1.5 rounded border border-slate-700 flex items-center gap-1">
                 <span>Canales</span> <span>▼</span>
               </button>
-              <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.options[0]?.url || '')}')" class="btn-red text-xs px-3.5 py-1.5 shadow">
+              <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.options[0]?.url || '')}')" class="btn-blue text-xs px-3.5 py-1.5 shadow">
                 Ver en Vivo
               </button>
             </div>
           </div>
 
           <div id="channels-${m.idEvent}" class="${isActive ? 'block' : 'hidden'} pt-2 border-t border-slate-800/80 mt-1">
-            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">CANALES Y ENLACES OFICIALES: EMISIÓN EN DIRECTO</div>
+            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">SEÑALES DISPONIBLES EN DIRECTO:</div>
             <div class="flex flex-wrap gap-2">
               ${channelBtns}
             </div>
