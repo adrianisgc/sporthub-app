@@ -10,12 +10,10 @@
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
 
-    /* Cabecera Tarjeta Roja */
     .tr-header { background: #d32f2f; }
     .tr-nav-item { color: #ffffff; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
     .tr-nav-item:hover { color: #fef08a; }
 
-    /* Tarjetas y Filtros */
     .tr-card { background-color: #121722; border: 1px solid #1e2638; border-radius: 8px; transition: all 0.15s ease; }
     .tr-card:hover { border-color: #ef4444; }
     .tr-card.active { border-color: #ef4444; background-color: #1a2233; }
@@ -37,19 +35,17 @@
   <header class="tr-header shadow-md sticky top-0 z-30">
     <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
       <div class="flex items-center gap-3">
-        <div class="flex items-center gap-1.5 font-black text-xl text-white tracking-tight cursor-pointer" onclick="location.reload()">
+        <div class="flex items-center gap-1.5 font-black text-xl text-white tracking-tight cursor-pointer" onclick="fetchAgenda()">
           <span class="bg-white text-red-700 px-1.5 py-0.5 rounded text-xs">🔴</span>
           <span>Tarjeta Roja</span>
         </div>
       </div>
       
-      <!-- Menú Superior -->
       <nav class="hidden md:flex items-center gap-5">
         <a href="#" class="tr-nav-item text-yellow-300">PROGRAMACIÓN</a>
         <a href="#" class="tr-nav-item">PARTIDOS DE HOY</a>
         <a href="#" class="tr-nav-item">CANALES TV</a>
         <a href="#" class="tr-nav-item">GUÍA & FAQ</a>
-        <a href="#" class="tr-nav-item">AVISO LEGAL</a>
       </nav>
 
       <span id="clock-spain" class="text-xs font-mono bg-red-900/60 text-white px-2.5 py-1 rounded border border-red-800">🇪🇸 CET: --:--</span>
@@ -86,18 +82,18 @@
       </div>
     </section>
 
-    <!-- Caja de Búsqueda y Filtros de Deporte -->
+    <!-- Caja de Búsqueda y Categorías exactas de Tarjeta Roja -->
     <section class="tr-card p-4 flex flex-col gap-3">
-      <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido, equipo o competición (ej. Real Madrid, Barcelona, NBA)..." 
+      <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido, equipo o competición (ej. Real Madrid, Barcelona, Liga MX, NBA)..." 
              class="w-full bg-[#0b0e14] border border-slate-700 text-xs text-white placeholder-slate-400 px-4 py-2.5 rounded-lg focus:outline-none focus:border-red-500">
       
       <div class="flex flex-wrap gap-1.5 text-xs">
         <button onclick="filterSport('ALL', this)" class="filter-btn active px-3 py-1.5 rounded-full transition">⭐ Todos</button>
-        <button onclick="filterSport('FUTBOL', this)" class="filter-btn px-3 py-1.5 rounded-full transition">⚽ Fútbol</button>
-        <button onclick="filterSport('BASKET', this)" class="filter-btn px-3 py-1.5 rounded-full transition">🏀 Baloncesto</button>
+        <button onclick="filterSport('FÚTBOL', this)" class="filter-btn px-3 py-1.5 rounded-full transition">⚽ Fútbol</button>
+        <button onclick="filterSport('BALONCESTO', this)" class="filter-btn px-3 py-1.5 rounded-full transition">🏀 Baloncesto</button>
         <button onclick="filterSport('HOCKEY', this)" class="filter-btn px-3 py-1.5 rounded-full transition">🏒 Hockey (NHL)</button>
-        <button onclick="filterSport('NFL', this)" class="filter-btn px-3 py-1.5 rounded-full transition">🏈 Americano (NFL)</button>
-        <button onclick="filterSport('MLB', this)" class="filter-btn px-3 py-1.5 rounded-full transition">⚾ Béisbol (MLB)</button>
+        <button onclick="filterSport('AMERICANO', this)" class="filter-btn px-3 py-1.5 rounded-full transition">🏈 Americano (NFL)</button>
+        <button onclick="filterSport('BÉISBOL', this)" class="filter-btn px-3 py-1.5 rounded-full transition">⚾ Béisbol (MLB)</button>
         <button onclick="filterSport('UFC', this)" class="filter-btn px-3 py-1.5 rounded-full transition">🥊 UFC / Boxeo</button>
         <button onclick="filterSport('MOTOR', this)" class="filter-btn px-3 py-1.5 rounded-full transition">🏎️ Motor</button>
       </div>
@@ -109,7 +105,7 @@
         <h3 class="text-sm font-bold text-amber-400 flex items-center gap-1.5">
           <span>»</span> Programación de Hoy en Tarjeta Roja TV y Roja Directa
         </h3>
-        <span id="match-counter" class="text-xs bg-red-950 text-red-400 border border-red-900 px-2.5 py-0.5 rounded-full font-bold">0 Partidos Disponibles</span>
+        <span id="match-counter" class="text-xs bg-red-950 text-red-400 border border-red-900 px-2.5 py-0.5 rounded-full font-bold">Cargando...</span>
       </div>
 
       <div id="matches-list" class="flex flex-col gap-2.5">
@@ -151,7 +147,7 @@
         allMatches = data.events || [];
         renderMatches();
       } catch (e) {
-        container.innerHTML = '<div class="text-xs text-red-400 text-center py-8 tr-card">Error al conectar con Tarjeta Roja. Vuelve a pulsar recargar.</div>';
+        container.innerHTML = '<div class="text-xs text-red-400 text-center py-8 tr-card">Error de conexión. Pulsa en el logo para reintentar.</div>';
       }
     }
 
@@ -223,7 +219,6 @@
             </div>
           </div>
 
-          <!-- Canales desplegables estilo Tarjeta Roja -->
           <div id="channels-${m.idEvent}" class="${isActive ? 'block' : 'hidden'} pt-2 border-t border-slate-800/80 mt-1">
             <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">CANALES Y ENLACES OFICIALES: EMISIÓN EN DIRECTO</div>
             <div class="flex flex-wrap gap-2">
