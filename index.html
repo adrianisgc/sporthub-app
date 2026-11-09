@@ -2,237 +2,255 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SportHub Pro - Parrilla de Deportes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SportHub Pro - Deportes en Directo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background-color: #060913; color: #f3f4f6; }
+    body { background-color: #06090e; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 3px; }
-    .channel-card {
-      background: #111827;
-      border: 1px solid #1f2937;
-      transition: all 0.2s ease-in-out;
-    }
-    .channel-card:hover {
-      transform: translateY(-3px);
-      border-color: #10b981;
-      box-shadow: 0 0 15px rgba(16,185,129,0.25);
-    }
-    .channel-card.active {
-      border-color: #10b981;
-      background: rgba(16,185,129,0.12);
-      box-shadow: 0 0 20px rgba(16,185,129,0.3);
-    }
-    .tab-btn.active {
-      background-color: #10b981;
-      color: #000;
-      font-weight: 700;
-    }
-    .channel-btn.active {
-      background-color: #10b981;
-      color: black;
-      font-weight: bold;
-    }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+
+    /* Tema Negro, Blanco y Azul */
+    .sh-header { background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); border-bottom: 2px solid #2563eb; }
+    .sh-row { background-color: #0b1120; border-bottom: 1px solid #1e293b; transition: all 0.15s ease; }
+    .sh-row:hover, .sh-row:focus-within { background-color: #162032; border-left: 4px solid #3b82f6; }
+    .sh-row.active { background-color: #1e293b; border-left: 4px solid #60a5fa; }
+
+    .tab-btn.active { background-color: #2563eb; color: #ffffff; font-weight: bold; }
+    .btn-channel { background-color: #1e293b; border: 1px solid #334155; color: #cbd5e1; }
+    .btn-channel:hover, .btn-channel:focus { background-color: #2563eb; border-color: #3b82f6; color: #ffffff; outline: none; }
+    .btn-channel.active { background-color: #1d4ed8; border-color: #2563eb; color: #ffffff; font-weight: bold; }
+
+    /* Enfoque visual para mandos de Smart TV */
+    button:focus, input:focus, a:focus { outline: 2px solid #3b82f6 !important; outline-offset: 2px; }
+
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .spinner { animation: spin 1s linear infinite; }
   </style>
 </head>
-<body class="h-screen w-screen overflow-hidden flex flex-col font-sans select-none">
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden select-none">
 
-  <!-- Header Superior -->
-  <header class="bg-gray-950 border-b border-gray-800 px-6 py-3 flex flex-wrap justify-between items-center shrink-0 gap-4 z-20">
-    <div class="flex items-center gap-6">
-      <span class="text-emerald-400 text-2xl font-black tracking-wider">⚽ SportHub Pro</span>
-      <div class="flex gap-2 text-xs font-semibold">
-        <button onclick="filterCategory('ALL', this)" class="tab-btn active px-3.5 py-1.5 rounded-lg bg-gray-900 text-gray-300 hover:bg-gray-800 transition">TODOS</button>
-        <button onclick="filterCategory('FUTBOL', this)" class="tab-btn px-3.5 py-1.5 rounded-lg bg-gray-900 text-gray-300 hover:bg-gray-800 transition">⚽ FÚTBOL</button>
-        <button onclick="filterCategory('BASKET', this)" class="tab-btn px-3.5 py-1.5 rounded-lg bg-gray-900 text-gray-300 hover:bg-gray-800 transition">🏀 BÁSQUET</button>
-        <button onclick="filterCategory('MOTOR', this)" class="tab-btn px-3.5 py-1.5 rounded-lg bg-gray-900 text-gray-300 hover:bg-gray-800 transition">🏎️ F1 / MOTOR</button>
+  <!-- Header Estilo Negro y Azul -->
+  <header class="sh-header text-white px-4 py-3 shadow-2xl sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
+      
+      <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+        <div class="flex items-center gap-2">
+          <span class="bg-blue-600 text-white px-2 py-0.5 rounded font-black text-xs tracking-wider shadow">LIVE TV</span>
+          <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">SPORTHUB <span class="text-blue-400 font-normal text-sm md:text-base">| PRO</span></h1>
+        </div>
+        <span id="clock-spain" class="text-xs font-mono bg-slate-900 px-2.5 py-1 rounded border border-blue-900/60 text-blue-300 md:hidden">CET: --:--</span>
       </div>
-    </div>
 
-    <div class="flex items-center gap-3 text-xs">
-      <span id="clock-spain" class="text-gray-400 font-mono hidden sm:inline">🇪🇸 CET: --:--</span>
-      <input type="text" id="search-bar" oninput="renderGrid()" placeholder="🔍 Buscar partido o circuito..."
-             class="bg-gray-900 border border-gray-800 text-xs text-white px-3 py-1.5 rounded-lg focus:outline-none focus:border-emerald-500 w-44 md:w-60">
-      <button onclick="fetchEvents()" class="bg-gray-900 hover:bg-gray-800 text-gray-200 border border-gray-800 px-3 py-1.5 rounded-lg transition">↻ Recargar</button>
+      <!-- Buscador y Categorías -->
+      <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-between md:justify-end">
+        <div class="flex gap-1 text-xs">
+          <button onclick="filterSport('ALL', this)" class="tab-btn active px-3 py-1.5 rounded bg-slate-900 border border-slate-800 text-slate-300 transition">Todos</button>
+          <button onclick="filterSport('FUTBOL', this)" class="tab-btn px-3 py-1.5 rounded bg-slate-900 border border-slate-800 text-slate-300 transition">⚽ Fútbol</button>
+          <button onclick="filterSport('BASKET', this)" class="tab-btn px-3 py-1.5 rounded bg-slate-900 border border-slate-800 text-slate-300 transition">🏀 Básquet</button>
+          <button onclick="filterSport('MOTOR', this)" class="tab-btn px-3 py-1.5 rounded bg-slate-900 border border-slate-800 text-slate-300 transition">🏎️ F1 / Motor</button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido..." 
+                 class="bg-slate-900 border border-slate-700 text-xs text-white placeholder-slate-400 px-3 py-1.5 rounded focus:outline-none focus:border-blue-500 w-36 sm:w-48">
+          <span id="clock-spain-desktop" class="text-xs font-mono bg-slate-900 px-2.5 py-1 rounded border border-blue-900/60 text-blue-300 hidden md:inline">🇪🇸 CET: --:--</span>
+          <button onclick="fetchAgenda()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-2.5 py-1.5 rounded transition font-bold">↻</button>
+        </div>
+      </div>
+
     </div>
   </header>
 
-  <!-- Panel Principal -->
-  <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-    
-    <!-- Cuadrícula de Canales (Estilo Photocall) -->
-    <main class="flex-1 p-4 overflow-y-auto">
-      <div id="events-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5">
-        <div class="col-span-full text-center text-xs text-gray-500 py-12">Cargando eventos de futbolvivo.tv...</div>
-      </div>
-    </main>
+  <!-- Contenedor Principal -->
+  <main class="max-w-7xl mx-auto w-full flex-1 p-3 md:p-5 flex flex-col gap-4">
 
-    <!-- Reproductor Integrado Lateral -->
-    <aside class="w-full lg:w-[480px] bg-gray-950 border-t lg:border-t-0 lg:border-l border-gray-800 flex flex-col p-4 shrink-0 h-[45vh] lg:h-auto overflow-hidden">
+    <!-- Zona del Reproductor -->
+    <section id="player-wrapper" class="w-full bg-black rounded-xl overflow-hidden border border-slate-800 shadow-2xl flex flex-col">
       
-      <!-- Ficha del evento activo -->
-      <div class="bg-gray-900/60 p-3 rounded-xl border border-gray-800 mb-2 flex items-center justify-between shrink-0">
-        <div class="min-w-0 pr-2">
-          <h2 id="player-title" class="text-sm font-bold text-white truncate">Selecciona una casilla</h2>
-          <p id="player-subtitle" class="text-xs text-emerald-400 font-medium truncate mt-0.5">Haz clic en una emisión para ver en directo</p>
+      <!-- Cabeza del Reproductor -->
+      <div class="bg-slate-900 px-4 py-2.5 border-b border-slate-800 flex justify-between items-center gap-2">
+        <div class="min-w-0">
+          <h2 id="player-title" class="text-sm md:text-base font-bold text-white truncate">Selecciona un partido de la lista</h2>
+          <p id="player-subtitle" class="text-xs text-blue-400 truncate">Emisión directa libre de anuncios</p>
         </div>
-        <button onclick="toggleFullscreen()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg font-bold shrink-0 transition">📺 Fullscreen</button>
+        <button id="fullscreen-btn" onclick="toggleFullscreen()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-1.5 rounded font-bold transition flex items-center gap-1.5 shrink-0 shadow">
+          <span>📺</span> <span>Pantalla Completa</span>
+        </button>
       </div>
 
       <!-- Pantalla del Reproductor -->
-      <div id="player-container" class="w-full flex-1 bg-black rounded-xl overflow-hidden border border-gray-800 relative flex items-center justify-center">
+      <div id="player-container" class="relative w-full aspect-video max-h-[70vh] bg-black flex items-center justify-center">
         <iframe id="iframe-player" class="w-full h-full hidden" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
         
-        <div id="loading-spinner" class="absolute inset-0 bg-black/80 backdrop-blur-sm hidden flex flex-col items-center justify-center text-center z-20">
-          <div class="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full spinner mb-3"></div>
-          <p class="text-white text-xs font-semibold">Cargando emisión por Proxy seguro...</p>
+        <div id="loading-spinner" class="absolute inset-0 bg-black/90 backdrop-blur-sm hidden flex flex-col items-center justify-center text-center z-20">
+          <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full spinner mb-3"></div>
+          <p class="text-white text-xs font-semibold">Sintonizando señal por Proxy sin anuncios...</p>
         </div>
 
-        <div id="player-placeholder" class="absolute inset-0 bg-gray-950 flex flex-col items-center justify-center text-center text-gray-500 p-6 z-10">
-          <div class="text-5xl mb-3">⚽</div>
-          <p class="text-sm font-semibold text-gray-300">Parrilla en Directo</p>
-          <p class="text-xs text-gray-500 mt-1">Elige un evento deportivo de la izquierda.</p>
+        <div id="player-placeholder" class="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center text-center text-slate-400 p-6 z-10">
+          <div class="text-4xl md:text-5xl mb-2 text-blue-500">⚽</div>
+          <p class="text-sm md:text-base font-semibold text-white">SportHub Pro - Parrilla Deportiva</p>
+          <p class="text-xs text-slate-400 mt-1">Haz clic en cualquier opción de "Canal / Señal" en la lista de abajo.</p>
         </div>
       </div>
 
-      <!-- Barra de Señales alternativas -->
-      <div class="mt-2 bg-gray-900/40 px-3 py-2 rounded-xl border border-gray-800/60 flex items-center justify-between text-xs shrink-0 flex-wrap gap-2">
+      <!-- Selector de señales bajo el reproductor -->
+      <div class="bg-slate-900/80 px-4 py-2 border-t border-slate-800 flex justify-between items-center text-xs flex-wrap gap-2">
         <div class="flex items-center gap-2 truncate">
-          <span class="text-gray-400">Señales:</span>
-          <div id="options-bar" class="flex gap-1.5 overflow-x-auto">
-            <span class="text-gray-600 italic">Ningún partido activo</span>
+          <span class="text-slate-400">Opción de señal:</span>
+          <div id="active-signals-bar" class="flex gap-1.5 overflow-x-auto">
+            <span class="text-slate-500 italic">Ningún partido activo</span>
           </div>
         </div>
-        <span class="text-gray-400 font-mono text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded border border-emerald-800">🛡️ Proxy Direct</span>
+        <span class="text-[10px] text-blue-400 font-mono bg-blue-950/60 px-2 py-0.5 rounded border border-blue-800">🛡️ Fullscreen Ready</span>
       </div>
 
-    </aside>
+    </section>
 
-  </div>
+    <!-- Lista de Partidos -->
+    <section class="w-full flex flex-col gap-2">
+      <div class="flex justify-between items-center px-1 mb-1">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+          <span>📅</span> Programación Deportiva en Directo (Hora CET España)
+        </h3>
+        <span id="match-counter" class="text-xs bg-blue-950 text-blue-400 border border-blue-900 px-2 py-0.5 rounded font-bold">0 eventos</span>
+      </div>
+
+      <div id="matches-list" class="flex flex-col rounded-xl overflow-hidden border border-slate-800">
+        <div class="text-xs text-slate-500 text-center py-12 bg-slate-950">Cargando la programación de partidos...</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-slate-950 border-t border-slate-900 py-3 text-center text-[11px] text-slate-500">
+    SportHub Pro &copy; 2026 - Emisión adaptable para Móvil, PC y Smart TV
+  </footer>
 
   <script>
-    let allEvents = [];
-    let currentCategory = 'ALL';
-    let activeEventId = null;
+    let allMatches = [];
+    let currentSport = 'ALL';
+    let activeMatchId = null;
 
     const BACKEND_URL = 'https://sporthub-backend-xhxz.onrender.com';
 
     document.addEventListener('DOMContentLoaded', () => {
       updateSpainClock();
       setInterval(updateSpainClock, 10000);
-      fetchEvents();
+      fetchAgenda();
     });
 
     function updateSpainClock() {
       const now = new Date();
       const options = { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' };
       const timeStr = new Intl.DateTimeFormat('es-ES', options).format(now);
-      const clockEl = document.getElementById('clock-spain');
-      if (clockEl) clockEl.textContent = `🇪🇸 CET: ${timeStr}`;
+      document.getElementById('clock-spain').textContent = `CET: ${timeStr}`;
+      document.getElementById('clock-spain-desktop').textContent = `🇪🇸 CET: ${timeStr}`;
     }
 
-    async function fetchEvents() {
+    async function fetchAgenda() {
+      const container = document.getElementById('matches-list');
       try {
         const res = await fetch(`${BACKEND_URL}/api/agenda`);
         const data = await res.json();
-        allEvents = data.events || [];
-        renderGrid();
+        allMatches = data.events || [];
+        renderMatches();
       } catch (e) {
-        document.getElementById('events-grid').innerHTML = '<div class="col-span-full text-red-400 text-xs text-center py-8">Error al conectar con la agenda deportiva.</div>';
+        container.innerHTML = '<div class="text-xs text-red-400 text-center py-8 bg-slate-950">Error al conectar con la agenda. Haz clic en ↻ para reintentar.</div>';
       }
     }
 
-    function filterCategory(cat, btn) {
-      currentCategory = cat;
+    function filterSport(category, btn) {
+      currentSport = category;
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      renderGrid();
+      renderMatches();
     }
 
-    function renderGrid() {
-      const grid = document.getElementById('events-grid');
-      const query = document.getElementById('search-bar').value.trim().toLowerCase();
+    function renderMatches() {
+      const container = document.getElementById('matches-list');
+      const counter = document.getElementById('match-counter');
+      const query = document.getElementById('search-input').value.trim().toLowerCase();
 
-      let filtered = allEvents;
-      if (currentCategory !== 'ALL') {
-        filtered = filtered.filter(e => e.sport === currentCategory);
+      let filtered = allMatches;
+      if (currentSport !== 'ALL') {
+        filtered = filtered.filter(m => m.sport === currentSport);
       }
       if (query) {
-        filtered = filtered.filter(e => e.strEvent.toLowerCase().includes(query) || e.strLeague.toLowerCase().includes(query));
+        filtered = filtered.filter(m => m.strEvent.toLowerCase().includes(query) || m.strLeague.toLowerCase().includes(query));
       }
 
-      grid.innerHTML = '';
+      counter.textContent = `${filtered.length} eventos`;
+      container.innerHTML = '';
+
       if (filtered.length === 0) {
-        grid.innerHTML = '<div class="col-span-full text-gray-500 text-xs text-center py-12">No hay eventos deportivos en esta categoría.</div>';
+        container.innerHTML = '<div class="text-xs text-slate-500 text-center py-12 bg-slate-950">No hay partidos disponibles en esta categoría.</div>';
         return;
       }
 
-      filtered.forEach(ev => {
-        const card = document.createElement('div');
-        card.className = `channel-card p-4 rounded-2xl cursor-pointer flex flex-col items-center justify-between text-center min-h-[145px] ${ev.idEvent === activeEventId ? 'active' : ''}`;
-        card.onclick = () => playEvent(ev);
+      filtered.forEach((m) => {
+        const row = document.createElement('div');
+        row.className = `sh-row p-3 md:p-3.5 flex flex-col md:flex-row justify-between items-start md:items-center gap-2.5 ${m.idEvent === activeMatchId ? 'active' : ''}`;
+        
+        const isLive = m.strTime === 'EN VIVO' || m.strTime === 'En Vivo';
+        const timeBadge = isLive 
+          ? '<span class="bg-blue-600 text-white font-bold text-[10px] px-2 py-0.5 rounded animate-pulse">EN VIVO</span>'
+          : `<span class="bg-slate-800 text-blue-400 font-mono text-xs font-bold px-2 py-0.5 rounded">🕒 ${escapeHTML(m.strTime)}</span>`;
 
-        const timeBadge = ev.strTime === 'EN VIVO' || ev.strTime === 'En Vivo' 
-          ? '<span class="bg-red-950 text-red-400 border border-red-800 px-1.5 py-0.5 rounded text-[9px] font-bold animate-pulse">🔴 EN VIVO</span>'
-          : `<span class="bg-gray-900 text-emerald-400 border border-gray-800 px-1.5 py-0.5 rounded text-[10px] font-mono">🕒 ${escapeHTML(ev.strTime)}</span>`;
+        const sportIcon = m.sport === 'MOTOR' ? '🏎️' : (m.sport === 'BASKET' ? '🏀' : '⚽');
 
-        card.innerHTML = `
-          <div class="w-full flex justify-between items-center mb-1">
-            ${timeBadge}
-            <span class="text-[9px] text-gray-400 uppercase font-mono truncate max-w-[80px]">${escapeHTML(ev.strLeague)}</span>
+        let signalButtons = '';
+        if (m.options && m.options.length > 0) {
+          signalButtons = m.options.map((opt, optIdx) => `
+            <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.strLeague)}', '${escapeQuotes(opt.url)}', ${optIdx})" 
+                    class="btn-channel text-xs px-2.5 py-1 rounded transition flex items-center gap-1 font-medium">
+              <span>📺</span> Canal ${optIdx + 1}
+            </button>
+          `).join('');
+        } else {
+          signalButtons = `<button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.strLeague)}', '${escapeQuotes(m.streamUrl || '')}', 0)" 
+                                   class="btn-channel text-xs px-2.5 py-1 rounded transition">📺 Ver Partido</button>`;
+        }
+
+        row.innerHTML = `
+          <div class="flex items-center gap-3 min-w-0 w-full md:w-auto">
+            <div class="shrink-0 w-16 text-center">${timeBadge}</div>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs md:text-sm font-bold text-white truncate flex items-center gap-1.5">
+                <span>${sportIcon}</span>
+                <span>${escapeHTML(m.strEvent)}</span>
+              </div>
+              <div class="text-[11px] text-slate-400 truncate mt-0.5 font-mono">${escapeHTML(m.strLeague)}</div>
+            </div>
           </div>
 
-          <div class="w-14 h-10 flex items-center justify-center my-1">
-            <img src="${ev.logo}" alt="${ev.sport}" class="max-w-full max-h-full object-contain filter drop-shadow">
-          </div>
-
-          <div class="w-full">
-            <div class="text-xs font-bold text-white truncate leading-tight">${escapeHTML(ev.strEvent)}</div>
-            <div class="text-[10px] text-gray-500 mt-1">${ev.options.length} señal(es)</div>
+          <div class="flex items-center gap-1.5 shrink-0 self-end md:self-auto w-full md:w-auto justify-end overflow-x-auto pb-1 md:pb-0">
+            ${signalButtons}
           </div>
         `;
-        grid.appendChild(card);
+        container.appendChild(row);
       });
     }
 
-    function playEvent(ev) {
-      activeEventId = ev.idEvent;
-      renderGrid();
+    function playStream(matchId, title, league, url, optionIdx) {
+      activeMatchId = matchId;
+      renderMatches();
 
-      document.getElementById('player-title').textContent = ev.strEvent;
-      document.getElementById('player-subtitle').textContent = `${ev.strLeague} | CET: ${ev.strTime}`;
+      document.getElementById('player-title').textContent = title;
+      document.getElementById('player-subtitle').textContent = `${league} | Señal activa por Proxy`;
 
-      renderOptions(ev.options);
-      if (ev.options.length > 0) {
-        tuneChannel(ev.options[0].url);
-      }
-    }
-
-    function renderOptions(options) {
-      const bar = document.getElementById('options-bar');
-      bar.innerHTML = '';
-      if (!options || options.length === 0) {
-        bar.innerHTML = '<span class="text-gray-600 italic">Sin señales</span>';
-        return;
+      const match = allMatches.find(m => m.idEvent === matchId);
+      const signalsBar = document.getElementById('active-signals-bar');
+      if (match && match.options) {
+        signalsBar.innerHTML = match.options.map((opt, i) => `
+          <button onclick="playStream('${matchId}', '${escapeQuotes(title)}', '${escapeQuotes(league)}', '${escapeQuotes(opt.url)}', ${i})"
+                  class="px-2 py-0.5 rounded text-[11px] border ${i === optionIdx ? 'bg-blue-600 text-white border-blue-500 font-bold' : 'bg-slate-800 text-slate-300 border-slate-700'}">
+            Canal ${i + 1}
+          </button>
+        `).join('');
       }
 
-      options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = `channel-btn px-2.5 py-0.5 rounded text-[11px] border border-gray-800 transition font-medium bg-gray-900 text-gray-300 hover:bg-gray-800 ${idx === 0 ? 'active' : ''}`;
-        btn.textContent = `Señal ${idx + 1}`;
-        btn.onclick = () => {
-          document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          tuneChannel(opt.url);
-        };
-        bar.appendChild(btn);
-      });
-    }
-
-    function tuneChannel(url) {
       const iframe = document.getElementById('iframe-player');
       const placeholder = document.getElementById('player-placeholder');
       const spinner = document.getElementById('loading-spinner');
@@ -240,19 +258,46 @@
       placeholder.classList.add('hidden');
       spinner.classList.remove('hidden');
 
+      if (window.innerWidth < 768) {
+        document.getElementById('player-wrapper').scrollIntoView({ behavior: 'smooth' });
+      }
+
       const proxyUrl = `${BACKEND_URL}/api/proxy?url=${encodeURIComponent(url)}`;
       iframe.classList.remove('hidden');
       iframe.onload = () => { spinner.classList.add('hidden'); };
       iframe.src = proxyUrl;
 
-      setTimeout(() => spinner.classList.add('hidden'), 2500);
+      setTimeout(() => spinner.classList.add('hidden'), 3000);
+    }
+
+    function toggleFullscreen() {
+      const container = document.getElementById('player-container');
+      
+      if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        if (container.requestFullscreen) {
+          container.requestFullscreen();
+        } else if (container.mozRequestFullScreen) {
+          container.mozRequestFullScreen();
+        } else if (container.webkitRequestFullscreen) {
+          container.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+        } else if (container.msRequestFullscreen) {
+          container.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
     }
 
     function escapeHTML(str) { return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-    function toggleFullscreen() {
-      const c = document.getElementById('player-container');
-      if (document.fullscreenElement) document.exitFullscreen(); else c.requestFullscreen();
-    }
+    function escapeQuotes(str) { return String(str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
   </script>
 </body>
 </html>
