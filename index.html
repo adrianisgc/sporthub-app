@@ -3,157 +3,173 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SportHub Pro - Deportes en Directo HD</title>
+  <title>SportHub Pro - Deportes en Directo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background-color: #0b0d12; color: #e5e7eb; font-family: system-ui, -apple-system, sans-serif; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    :root {
+      --bg-main: #0a0a0a;
+      --bg-card: #141416;
+      --bg-card-hover: #1a1b1f;
+      --bg-header: #000000;
+      --border-color: #262626;
+      --accent-blue: #2563eb;
+      --accent-blue-hover: #1d4ed8;
+      --text-muted: #737373;
+      --gold: #f59e0b;
+    }
 
-    /* Cabecera */
-    .sh-header { background: #000000; border-bottom: 2px solid #2563eb; }
-    .sh-nav-item { color: #ffffff; font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .sh-nav-item:hover { color: #3b82f6; }
+    body { background-color: var(--bg-main); color: #e5e5e5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+
+    /* Header */
+    .sh-header { background: var(--bg-header); border-bottom: 2px solid var(--accent-blue); }
+    .nav-link { color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.2s; }
+    .nav-link:hover { color: #60a5fa; }
+
+    /* Contenedores */
+    .tr-box { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; }
+    .tr-row { border-bottom: 1px solid var(--border-color); transition: background-color 0.2s; }
+    .tr-row:hover { background-color: var(--bg-card-hover); }
+    .tr-row:last-child { border-bottom: none; }
+
+    /* Buscador y Píldoras */
+    .search-input { background-color: #1a1a1c; border: 1px solid #333; color: #fff; width: 100%; border-radius: 6px; }
+    .search-input:focus { outline: none; border-color: var(--accent-blue); }
     
-    /* Contenedores Principales Idénticos */
-    .sh-box { background-color: #12151c; border: 1px solid #1f2533; border-radius: 8px; }
-    .sh-row { background-color: #12151c; border-bottom: 1px solid #1f2533; transition: all 0.15s ease; }
-    .sh-row:hover { background-color: #161a23; }
-    .sh-row:last-child { border-bottom: none; }
+    .pill { background-color: #1a1a1c; color: #a3a3a3; border: 1px solid #333; border-radius: 9999px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .pill:hover { background-color: #262626; color: #fff; }
+    .pill.active { background-color: var(--accent-blue); border-color: var(--accent-blue); color: #fff; font-weight: 700; }
 
-    /* Buscador */
-    .sh-input { background-color: #1a1e27; border: 1px solid #283042; color: #ffffff; border-radius: 6px; }
-    .sh-input:focus { outline: none; border-color: #3b82f6; }
-
-    /* Botones Píldora Filtros */
-    .pill-btn { background-color: #12151c; color: #94a3b8; border: 1px solid #283042; border-radius: 9999px; font-size: 13px; font-weight: 500; }
-    .pill-btn:hover { background-color: #1a1e27; color: #ffffff; }
-    .pill-btn.active { background-color: #2563eb; color: #ffffff; border-color: #2563eb; font-weight: 700; }
-
-    /* Botones de Partido */
-    .btn-canales { background-color: #1a1e27; border: 1px solid #283042; color: #e2e8f0; font-size: 12px; font-weight: 600; border-radius: 4px; padding: 6px 12px; }
-    .btn-canales:hover { background-color: #283042; color: #ffffff; }
-    .btn-live { background-color: #1d4ed8; color: #ffffff; font-size: 12px; font-weight: 700; border-radius: 4px; padding: 6px 14px; }
-    .btn-live:hover { background-color: #1e40af; }
+    /* Elementos del Partido (Réplica exacta de la captura) */
+    .time-box { background-color: #1a1a1c; border: 1px solid #333; border-radius: 6px; padding: 8px 0; text-align: center; width: 65px; flex-shrink: 0; }
+    .time-val { color: var(--gold); font-size: 15px; font-weight: 800; }
+    .time-sub { color: var(--text-muted); font-size: 10px; margin-top: 2px; }
     
-    .btn-canal-link { background-color: #1a1e27; border: 1px solid #283042; color: #ffffff; font-size: 12px; font-weight: 600; border-radius: 4px; padding: 5px 10px; display: inline-flex; align-items: center; gap: 6px; }
-    .btn-canal-link:hover { background-color: #283042; }
+    .live-box { background-color: #dc2626; border-radius: 6px; padding: 8px 0; text-align: center; width: 65px; flex-shrink: 0; box-shadow: 0 0 10px rgba(220, 38, 38, 0.3); }
+    .live-val { color: #fff; font-size: 12px; font-weight: 900; display: flex; flex-direction: column; align-items: center; line-height: 1.2; }
+    .live-dot { width: 6px; height: 6px; background-color: #fff; border-radius: 50%; margin-bottom: 2px; animation: pulse 1.5s infinite; }
 
-    /* Caja de Hora */
-    .time-box { background-color: transparent; border: none; text-align: left; }
-    .time-text { color: #f59e0b; font-weight: 700; font-size: 14px; font-family: monospace; }
+    .vs-box { background-color: #333; color: var(--gold); font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 4px; margin: 0 8px; }
+
+    /* Botones Derechos */
+    .btn-canales { background-color: #1a1a1c; border: 1px solid #333; color: #e5e5e5; font-size: 12px; font-weight: 600; padding: 7px 12px; border-radius: 4px; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+    .btn-canales:hover { background-color: #262626; color: #fff; }
     
-    /* Etiqueta VS */
-    .vs-badge { background-color: #1a1e27; color: #f59e0b; font-size: 10px; font-weight: 900; padding: 2px 5px; border-radius: 4px; }
+    .btn-play { background-color: var(--accent-blue); color: #fff; font-size: 12px; font-weight: 700; padding: 7px 16px; border-radius: 4px; transition: background-color 0.2s; }
+    .btn-play:hover { background-color: var(--accent-blue-hover); }
 
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .spinner { animation: spin 1s linear infinite; }
+    /* Acordeón Canales */
+    .channel-link { background-color: #1a1a1c; border: 1px solid #333; color: #fff; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 8px; transition: background-color 0.2s; }
+    .channel-link:hover { background-color: #262626; }
+    .lang-badge { background-color: var(--gold); color: #000; font-size: 9px; font-weight: 900; padding: 1px 4px; border-radius: 2px; }
+
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent-blue); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between select-none">
+<body class="min-h-screen flex flex-col">
 
-  <!-- Header Superior Negro y Azul -->
-  <header class="sh-header shadow-lg sticky top-0 z-30">
+  <!-- Header Superior -->
+  <header class="sh-header sticky top-0 z-30">
     <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <div class="flex items-center gap-2 font-black text-xl text-white tracking-tight cursor-pointer" onclick="fetchAgenda()">
-          <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-black shadow">LIVE</span>
-          <span>SPORTHUB <span class="text-blue-500 font-normal">PRO</span></span>
-        </div>
+      <div class="flex items-center gap-2 font-black text-2xl text-white cursor-pointer" onclick="fetchAgenda()">
+        <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-sm shadow">LIVE</span>
+        <span>SPORTHUB</span>
       </div>
       
       <nav class="hidden md:flex items-center gap-6">
-        <a href="#" class="sh-nav-item text-blue-500">PROGRAMACIÓN</a>
-        <a href="#" class="sh-nav-item">PARTIDOS DE HOY</a>
-        <a href="#" class="sh-nav-item">CANALES TV</a>
-        <a href="#" class="sh-nav-item">GUÍA & FAQ</a>
-        <a href="#" class="sh-nav-item">AVISO LEGAL</a>
+        <a href="#" class="nav-link text-blue-500">PROGRAMACIÓN</a>
+        <a href="#" class="nav-link">PARTIDOS DE HOY</a>
+        <a href="#" class="nav-link">CANALES TV</a>
+        <a href="#" class="nav-link">GUÍA & FAQ</a>
       </nav>
 
-      <span id="clock-spain" class="text-xs font-mono text-slate-400">CET: --:--</span>
+      <div class="flex items-center gap-3">
+        <span id="clock-spain" class="text-xs font-mono text-gray-400">CET: --:--</span>
+        <button onclick="fetchAgenda()" class="text-gray-400 hover:text-white" title="Recargar Agenda">↻</button>
+      </div>
     </div>
   </header>
 
   <main class="max-w-5xl mx-auto w-full flex-1 p-3 md:p-5 flex flex-col gap-4">
 
-    <!-- Tarjeta Reproductor -->
-    <section id="player-wrapper" class="w-full bg-black rounded-lg overflow-hidden border border-slate-800 shadow-2xl flex flex-col hidden">
-      <div class="bg-[#12151c] px-4 py-3 border-b border-slate-800 flex justify-between items-center gap-2">
-        <div class="min-w-0">
-          <h2 id="player-title" class="text-base font-bold text-white truncate">Cargando emisión...</h2>
-          <p class="text-xs text-blue-400 truncate">SportHub Pro - Emisión Directa</p>
+    <!-- Reproductor de Video -->
+    <section id="player-wrapper" class="w-full bg-black rounded-lg overflow-hidden border border-gray-800 shadow-2xl hidden">
+      <div class="bg-[#141416] px-4 py-3 border-b border-gray-800 flex justify-between items-center">
+        <div>
+          <h2 id="player-title" class="text-sm font-bold text-white">Cargando...</h2>
+          <p class="text-[10px] text-blue-400 uppercase">Emisión en Directo</p>
         </div>
-        <button onclick="toggleFullscreen()" class="btn-live flex items-center gap-1.5 shrink-0">
-          <span>📺</span> <span>Pantalla Completa</span>
+        <button onclick="toggleFullscreen()" class="btn-play text-[11px] flex items-center gap-1.5">
+          📺 Pantalla Completa
         </button>
       </div>
-
       <div id="player-container" class="relative w-full aspect-video bg-black flex items-center justify-center">
-        <iframe id="iframe-player" class="w-full h-full hidden" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
-        <div id="loading-spinner" class="absolute inset-0 bg-black/90 flex flex-col items-center justify-center text-center z-20">
-          <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full spinner mb-3"></div>
-          <p class="text-white text-xs font-semibold">Sintonizando canal...</p>
+        <iframe id="iframe-player" class="w-full h-full hidden" frameborder="0" allowfullscreen></iframe>
+        <div id="loading-spinner" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center">
+          <div class="spinner mb-3"></div>
+          <p class="text-white text-xs font-medium">Conectando señal...</p>
         </div>
       </div>
-      
-      <button onclick="closePlayer()" class="bg-[#12151c] text-slate-400 text-xs py-2 text-center hover:bg-[#1a1e27] hover:text-white transition w-full">
-        Cerrar Reproductor
-      </button>
+      <button onclick="closePlayer()" class="w-full bg-[#141416] text-gray-400 hover:text-white py-2 text-xs transition">Cerrar Reproductor</button>
     </section>
 
-    <!-- Buscador y Filtros -->
-    <section class="sh-box p-4 flex flex-col gap-4">
-      <div class="relative">
-        <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido, equipo o competición (ej. Real Madrid, Barcelona, Liga MX, NBA)..." 
-               class="w-full sh-input px-4 py-2.5 text-sm">
-      </div>
-      
+    <!-- Buscador y Píldoras -->
+    <section class="tr-box p-4 flex flex-col gap-4">
+      <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido, equipo o competición..." class="search-input px-4 py-3 text-sm">
       <div class="flex flex-wrap gap-2">
-        <button onclick="filterSport('ALL', this)" class="pill-btn active px-4 py-1.5 transition">⭐ Todos</button>
-        <button onclick="filterSport('FÚTBOL', this)" class="pill-btn px-4 py-1.5 transition">⚽ Fútbol</button>
-        <button onclick="filterSport('BALONCESTO', this)" class="pill-btn px-4 py-1.5 transition">🏀 Baloncesto</button>
-        <button onclick="filterSport('HOCKEY', this)" class="pill-btn px-4 py-1.5 transition">🏒 Hockey (NHL)</button>
-        <button onclick="filterSport('AMERICANO', this)" class="pill-btn px-4 py-1.5 transition">🏈 Americano (NFL)</button>
-        <button onclick="filterSport('BÉISBOL', this)" class="pill-btn px-4 py-1.5 transition">⚾ Béisbol (MLB)</button>
-        <button onclick="filterSport('UFC', this)" class="pill-btn px-4 py-1.5 transition">🥊 UFC / Boxeo</button>
+        <button onclick="filterSport('ALL', this)" class="pill active">⭐ Todos</button>
+        <button onclick="filterSport('FÚTBOL', this)" class="pill">⚽ Fútbol</button>
+        <button onclick="filterSport('BALONCESTO', this)" class="pill">🏀 Baloncesto</button>
+        <button onclick="filterSport('HOCKEY', this)" class="pill">🏒 Hockey</button>
+        <button onclick="filterSport('AMERICANO', this)" class="pill">🏈 NFL</button>
+        <button onclick="filterSport('BÉISBOL', this)" class="pill">⚾ MLB</button>
+        <button onclick="filterSport('MOTOR', this)" class="pill">🏎️ Motor</button>
       </div>
     </section>
 
-    <!-- Lista de Partidos Estilo Original -->
-    <section class="flex flex-col gap-2">
-      <div class="sh-box">
-        <div class="px-4 py-3 border-b border-[#1f2533] flex justify-between items-center bg-[#12151c] rounded-t-lg">
-          <h3 class="text-sm font-bold text-blue-500 flex items-center gap-1.5">
-            <span>»</span> Programación de Hoy en SportHub Pro
-          </h3>
-          <span id="match-counter" class="text-xs bg-[#1a1e27] text-slate-300 border border-[#283042] px-3 py-1 rounded-full font-bold">Cargando...</span>
-        </div>
+    <!-- Lista de Partidos -->
+    <section class="flex flex-col gap-0">
+      <!-- Encabezado de Lista -->
+      <div class="tr-box rounded-b-none border-b-0 px-4 py-3 flex justify-between items-center relative overflow-hidden">
+        <!-- Línea decorativa superior -->
+        <div class="absolute top-0 left-0 w-full h-[2px] bg-blue-600"></div>
+        <h3 class="text-[13px] font-bold text-blue-500">» Programación de Hoy en SportHub</h3>
+        <span id="match-counter" class="bg-[#1a1a1c] border border-[#333] text-gray-300 text-[11px] px-3 py-1 rounded-full font-bold">Cargando...</span>
+      </div>
 
-        <div id="matches-list" class="flex flex-col">
-          <div class="text-xs text-slate-500 text-center py-16">Conectando con servidores...</div>
+      <!-- Contenedor de filas -->
+      <div id="matches-list" class="tr-box rounded-t-none flex flex-col">
+        <div class="text-sm text-gray-500 text-center py-20 flex flex-col items-center">
+          <div class="spinner mb-4 border-gray-500 border-top-gray-300"></div>
+          Obteniendo programación...
         </div>
       </div>
     </section>
 
   </main>
 
+  <footer class="bg-[#050505] border-t border-[#1a1a1c] py-4 text-center text-xs text-gray-600 mt-8">
+    SportHub Pro &copy; 2026 - Emisión en Directo
+  </footer>
+
   <script>
     let allMatches = [];
     let currentSport = 'ALL';
-    let activeMatchId = null;
 
     const BACKEND_URL = 'https://sporthub-backend-xhxz.onrender.com';
 
     document.addEventListener('DOMContentLoaded', () => {
       updateSpainClock();
-      setInterval(updateSpainClock, 10000);
+      setInterval(updateSpainClock, 60000);
       fetchAgenda();
     });
 
     function updateSpainClock() {
       const now = new Date();
-      const options = { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' };
-      document.getElementById('clock-spain').textContent = `CET: ${new Intl.DateTimeFormat('es-ES', options).format(now)}`;
+      document.getElementById('clock-spain').textContent = `CET: ${new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(now)}`;
     }
 
     async function fetchAgenda() {
@@ -161,16 +177,20 @@
       try {
         const res = await fetch(`${BACKEND_URL}/api/agenda`);
         const data = await res.json();
-        allMatches = data.events || [];
-        renderMatches();
+        if (data.success && data.events.length > 0) {
+            allMatches = data.events;
+            renderMatches();
+        } else {
+            throw new Error("No events");
+        }
       } catch (e) {
-        container.innerHTML = '<div class="text-xs text-slate-500 text-center py-16">Error al cargar la programación.</div>';
+        container.innerHTML = '<div class="text-sm text-red-400 text-center py-20">Error de conexión. Reintentando en breve...</div>';
       }
     }
 
     function filterSport(category, btn) {
       currentSport = category;
-      document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderMatches();
     }
@@ -181,99 +201,80 @@
       const query = document.getElementById('search-input').value.trim().toLowerCase();
 
       let filtered = allMatches;
-      if (currentSport !== 'ALL') {
-        filtered = filtered.filter(m => m.sport === currentSport);
-      }
-      if (query) {
-        filtered = filtered.filter(m => m.strEvent.toLowerCase().includes(query));
-      }
+      if (currentSport !== 'ALL') filtered = filtered.filter(m => m.sport === currentSport);
+      if (query) filtered = filtered.filter(m => m.strEvent.toLowerCase().includes(query));
 
       counter.textContent = `${filtered.length} Partidos Disponibles`;
       container.innerHTML = '';
 
       if (filtered.length === 0) {
-        container.innerHTML = '<div class="text-xs text-slate-500 text-center py-16">No hay eventos en esta categoría.</div>';
+        container.innerHTML = '<div class="text-sm text-gray-500 text-center py-20">No hay eventos para mostrar.</div>';
         return;
       }
 
-      const dateObj = new Date();
-      const currentDay = `${dateObj.getDate()}/${dateObj.getMonth() + 1}`;
+      const today = new Date();
+      const dateStr = `${today.getDate()}/${today.getMonth() + 1}`;
 
       filtered.forEach((m) => {
         const row = document.createElement('div');
-        const isActive = m.idEvent === activeMatchId;
-        row.className = `sh-row flex flex-col p-4`;
+        row.className = 'tr-row p-3 flex flex-col w-full';
 
-        const isLive = m.strTime === 'EN VIVO' || m.strTime === 'En Vivo';
-        const timeBox = isLive 
-          ? `<div class="bg-blue-600 text-white font-black text-[11px] px-2 py-1 rounded text-center mb-1">• EN VIVO</div><div class="text-[10px] text-slate-500 text-center">Local • ${currentDay}</div>`
-          : `<div class="time-text mb-1">${escapeHTML(m.strTime)}</div><div class="text-[10px] text-slate-500">Local • ${currentDay}</div>`;
+        const isLive = m.strTime === 'EN VIVO';
+        const timeElement = isLive 
+          ? `<div class="live-box"><div class="live-val"><div class="live-dot"></div>EN<br>VIVO</div></div><div class="time-sub text-center w-[65px]">Local • ${dateStr}</div>`
+          : `<div class="time-box"><div class="time-val">${m.strTime}</div></div><div class="time-sub text-center w-[65px]">Local • ${dateStr}</div>`;
 
-        let flagIcon = '⚽';
-        if (m.sport === 'BALONCESTO') flagIcon = '🏀';
-        else if (m.sport === 'HOCKEY') flagIcon = '🏒';
-        else if (m.sport === 'AMERICANO') flagIcon = '🏈';
-        else if (m.sport === 'BÉISBOL') flagIcon = '⚾';
-        else if (m.sport === 'UFC') flagIcon = '🥊';
-        else if (m.sport === 'MOTOR') flagIcon = '🏎️';
-
-        let eventHtml = '';
+        // Generar título con VS
+        let eventHtml = m.strEvent;
         if (m.strEvent.toUpperCase().includes(' VS ')) {
-          const parts = m.strEvent.split(/ VS /i);
-          eventHtml = `<span class="text-white font-bold">${escapeHTML(parts[0].trim())}</span> <span class="vs-badge mx-1.5">VS</span> <span class="text-white font-bold">${escapeHTML(parts[1].trim())}</span>`;
+            const parts = m.strEvent.split(/ VS /i);
+            eventHtml = `<span class="text-white font-bold text-[13px]">${escapeHTML(parts[0].trim())}</span><span class="vs-box">VS</span><span class="text-white font-bold text-[13px]">${escapeHTML(parts[1].trim())}</span>`;
         } else {
-          eventHtml = `<span class="text-white font-bold">${escapeHTML(m.strEvent)}</span>`;
+            eventHtml = `<span class="text-white font-bold text-[13px]">${escapeHTML(m.strEvent)}</span>`;
         }
 
-        let channelBtns = '';
+        let channelsHtml = '';
         if (m.options && m.options.length > 0) {
-          channelBtns = m.options.map((opt) => `
-            <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(opt.url)}')" class="btn-canal-link transition">
-              <span>▶ ${escapeHTML(opt.name)}</span>
-              <span class="bg-[#d97706] text-[#12151c] text-[10px] font-bold px-1.5 py-0.5 rounded">${opt.lang || 'Español'}</span>
-            </button>
-          `).join('');
+            channelsHtml = m.options.map(opt => `
+                <button onclick="playStream('${escapeQuotes(m.strEvent)}', '${escapeQuotes(opt.url)}')" class="channel-link">
+                    <span>▶ ${escapeHTML(opt.name)}</span>
+                    <span class="lang-badge">${opt.lang}</span>
+                </button>
+            `).join('');
         }
 
         row.innerHTML = `
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 w-full">
-            <div class="flex items-center gap-4 w-full md:w-auto">
-              <!-- Caja de Hora -->
-              <div class="w-16 shrink-0 time-box">${timeBox}</div>
-              
-              <!-- Bandera Redonda -->
-              <div class="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700 shadow-inner">
-                <span class="text-sm">${flagIcon}</span>
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4">
+            <div class="flex items-center gap-4 min-w-0 flex-1">
+              <div class="flex flex-col items-center shrink-0">
+                ${timeElement}
               </div>
-
-              <!-- Títulos -->
-              <div class="min-w-0">
-                <div class="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-0.5">${escapeHTML(m.sport)}</div>
-                <div class="text-[13px] flex items-center flex-wrap truncate">
+              
+              <div class="min-w-0 flex-1">
+                <div class="text-[10px] font-bold text-blue-500 uppercase tracking-wide mb-1">${escapeHTML(m.sport)}</div>
+                <div class="flex items-center flex-wrap truncate">
                   ${eventHtml}
                 </div>
               </div>
             </div>
 
-            <!-- Botones Derechos -->
-            <div class="flex items-center gap-2 self-end md:self-auto shrink-0 mt-2 md:mt-0">
-              <button onclick="toggleMatchChannels('${m.idEvent}')" class="btn-canales transition flex items-center gap-1.5">
-                <span>Canales</span> <span id="arrow-${m.idEvent}" class="text-[9px]">${isActive ? '▼' : '►'}</span>
+            <div class="flex items-center gap-2 shrink-0 self-end md:self-auto">
+              <button onclick="toggleChannels('${m.idEvent}')" class="btn-canales">
+                Canales <span id="arrow-${m.idEvent}" class="text-[10px] ml-1">►</span>
               </button>
-              <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.options[0]?.url || '')}')" class="btn-live transition shadow">
+              <button onclick="playStream('${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.options[0]?.url || '')}')" class="btn-play">
                 Ver en Vivo
               </button>
             </div>
           </div>
 
-          <!-- Acordeón Inferior Oculto -->
-          <div id="channels-${m.idEvent}" class="${isActive ? 'block' : 'hidden'} mt-4 pt-3 border-t border-[#1f2533] w-full">
-            <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider mb-2.5">
-              <span class="text-slate-400">CANALES Y ENLACES OFICIALES:</span>
-              <span class="text-slate-500">EMISIÓN EN DIRECTO</span>
+          <div id="channels-${m.idEvent}" class="hidden mt-4 pt-3 border-t border-[#262626] w-full">
+            <div class="flex justify-between items-center text-[10px] font-bold uppercase mb-3">
+              <span class="text-gray-400">CANALES Y ENLACES OFICIALES:</span>
+              <span class="text-gray-500">EMISIÓN EN DIRECTO</span>
             </div>
             <div class="flex flex-wrap gap-2">
-              ${channelBtns}
+              ${channelsHtml}
             </div>
           </div>
         `;
@@ -281,7 +282,7 @@
       });
     }
 
-    function toggleMatchChannels(id) {
+    function toggleChannels(id) {
       const el = document.getElementById(`channels-${id}`);
       const arrow = document.getElementById(`arrow-${id}`);
       if (el) {
@@ -295,10 +296,9 @@
       }
     }
 
-    function playStream(matchId, title, url) {
-      activeMatchId = matchId;
+    function playStream(title, url) {
+      if(!url) return;
       document.getElementById('player-title').textContent = title;
-
       const wrapper = document.getElementById('player-wrapper');
       const iframe = document.getElementById('iframe-player');
       const spinner = document.getElementById('loading-spinner');
@@ -316,34 +316,24 @@
         iframe.classList.remove('hidden');
       };
       iframe.src = proxyUrl;
-
-      setTimeout(() => {
-        spinner.classList.add('hidden');
-        iframe.classList.remove('hidden');
-      }, 4000);
-      
-      renderMatches(); // Para mantener el botón canales abierto
     }
 
     function closePlayer() {
       document.getElementById('player-wrapper').classList.add('hidden');
       document.getElementById('iframe-player').src = '';
-      activeMatchId = null;
-      renderMatches();
     }
 
     function toggleFullscreen() {
       const container = document.getElementById('player-container');
-      if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+      if (!document.fullscreenElement) {
         if (container.requestFullscreen) container.requestFullscreen();
-        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
       } else {
         if (document.exitFullscreen) document.exitFullscreen();
       }
     }
 
-    function escapeHTML(str) { return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-    function escapeQuotes(str) { return String(str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+    function escapeHTML(str) { return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    function escapeQuotes(str) { return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
   </script>
 </body>
 </html>
