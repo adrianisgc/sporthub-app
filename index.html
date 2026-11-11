@@ -10,131 +10,132 @@
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
 
-    /* Cabecera idéntica a Tarjeta Roja en Azul */
-    .sh-header { background: linear-gradient(180deg, #1e3a8a 0%, #1e293b 100%); border-bottom: 2px solid #2563eb; }
-    .sh-nav-item { color: #ffffff; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .sh-nav-item:hover { color: #93c5fd; }
+    /* Cabecera */
+    .sh-header { background: #000000; border-bottom: 2px solid #2563eb; }
+    .sh-nav-item { color: #ffffff; font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .sh-nav-item:hover { color: #3b82f6; }
+    
+    /* Contenedores Principales Idénticos */
+    .sh-box { background-color: #12151c; border: 1px solid #1f2533; border-radius: 8px; }
+    .sh-row { background-color: #12151c; border-bottom: 1px solid #1f2533; transition: all 0.15s ease; }
+    .sh-row:hover { background-color: #161a23; }
+    .sh-row:last-child { border-bottom: none; }
 
-    /* Estructura Tarjetas IDÉNTICA */
-    .tr-box { background-color: #121620; border: 1px solid #1e2638; border-radius: 8px; }
-    .tr-row { background-color: #121620; border-bottom: 1px solid #1a2233; transition: all 0.15s ease; }
-    .tr-row:hover { background-color: #171f30; }
+    /* Buscador */
+    .sh-input { background-color: #1a1e27; border: 1px solid #283042; color: #ffffff; border-radius: 6px; }
+    .sh-input:focus { outline: none; border-color: #3b82f6; }
 
-    /* Botones Píldora Identicos */
-    .pill-btn { background-color: #171f30; color: #94a3b8; border: 1px solid #232e45; border-radius: 9999px; font-size: 12px; }
-    .pill-btn:hover { background-color: #232e45; color: #ffffff; }
-    .pill-btn.active { background-color: #2563eb; color: #ffffff; border-color: #3b82f6; font-weight: bold; }
+    /* Botones Píldora Filtros */
+    .pill-btn { background-color: #12151c; color: #94a3b8; border: 1px solid #283042; border-radius: 9999px; font-size: 13px; font-weight: 500; }
+    .pill-btn:hover { background-color: #1a1e27; color: #ffffff; }
+    .pill-btn.active { background-color: #2563eb; color: #ffffff; border-color: #2563eb; font-weight: 700; }
 
-    /* Botón Ver en Vivo */
-    .btn-live { background-color: #2563eb; color: #ffffff; font-weight: bold; border-radius: 6px; }
-    .btn-live:hover { background-color: #1d4ed8; }
+    /* Botones de Partido */
+    .btn-canales { background-color: #1a1e27; border: 1px solid #283042; color: #e2e8f0; font-size: 12px; font-weight: 600; border-radius: 4px; padding: 6px 12px; }
+    .btn-canales:hover { background-color: #283042; color: #ffffff; }
+    .btn-live { background-color: #1d4ed8; color: #ffffff; font-size: 12px; font-weight: 700; border-radius: 4px; padding: 6px 14px; }
+    .btn-live:hover { background-color: #1e40af; }
+    
+    .btn-canal-link { background-color: #1a1e27; border: 1px solid #283042; color: #ffffff; font-size: 12px; font-weight: 600; border-radius: 4px; padding: 5px 10px; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-canal-link:hover { background-color: #283042; }
 
-    button:focus, input:focus, a:focus { outline: 2px solid #3b82f6 !important; outline-offset: 2px; }
+    /* Caja de Hora */
+    .time-box { background-color: transparent; border: none; text-align: left; }
+    .time-text { color: #f59e0b; font-weight: 700; font-size: 14px; font-family: monospace; }
+    
+    /* Etiqueta VS */
+    .vs-badge { background-color: #1a1e27; color: #f59e0b; font-size: 10px; font-weight: 900; padding: 2px 5px; border-radius: 4px; }
 
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .spinner { animation: spin 1s linear infinite; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between overflow-x-hidden select-none">
+<body class="min-h-screen flex flex-col justify-between select-none">
 
-  <!-- Header Superior Réplica Exacta -->
+  <!-- Header Superior Negro y Azul -->
   <header class="sh-header shadow-lg sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
-      <div class="flex items-center gap-2 font-black text-xl text-white tracking-tight cursor-pointer" onclick="fetchAgenda()">
-        <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-black shadow">LIVE</span>
-        <span>SPORTHUB <span class="text-blue-400 font-normal">PRO</span></span>
+    <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 font-black text-xl text-white tracking-tight cursor-pointer" onclick="fetchAgenda()">
+          <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-black shadow">LIVE</span>
+          <span>SPORTHUB <span class="text-blue-500 font-normal">PRO</span></span>
+        </div>
       </div>
       
       <nav class="hidden md:flex items-center gap-6">
-        <a href="#" class="sh-nav-item text-blue-300">PROGRAMACIÓN</a>
+        <a href="#" class="sh-nav-item text-blue-500">PROGRAMACIÓN</a>
         <a href="#" class="sh-nav-item">PARTIDOS DE HOY</a>
         <a href="#" class="sh-nav-item">CANALES TV</a>
         <a href="#" class="sh-nav-item">GUÍA & FAQ</a>
         <a href="#" class="sh-nav-item">AVISO LEGAL</a>
       </nav>
 
-      <div class="flex items-center gap-2">
-        <span id="clock-spain" class="text-xs font-mono bg-slate-900 text-blue-300 px-2.5 py-1 rounded border border-blue-900/60">🇪🇸 CET: --:--</span>
-        <button onclick="fetchAgenda()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-2.5 py-1 rounded transition font-bold">↻</button>
-      </div>
+      <span id="clock-spain" class="text-xs font-mono text-slate-400">CET: --:--</span>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto w-full flex-1 p-3 md:p-5 flex flex-col gap-4">
+  <main class="max-w-5xl mx-auto w-full flex-1 p-3 md:p-5 flex flex-col gap-4">
 
-    <!-- Tarjeta Informativa Superior (Idéntica a Tarjeta Roja) -->
-    <section class="tr-box p-4 text-center text-xs text-slate-300">
-      <p class="max-w-4xl mx-auto leading-relaxed">
-        <strong class="text-white">SportHub Pro</strong> reúne toda la programación de <strong class="text-white">fútbol en vivo</strong>, los <strong class="text-white">partidos de hoy</strong> y los próximos enfrentamientos en HD. Consulta fechas, horarios, calendarios y señales de las grandes competiciones como <strong class="text-blue-400">LaLiga, Champions League, NBA, Premier League y F1</strong> sin cortes.
-      </p>
-    </section>
-
-    <!-- Reproductor Integrado -->
-    <section id="player-wrapper" class="w-full bg-black rounded-xl overflow-hidden border border-slate-800 shadow-2xl flex flex-col">
-      <div class="bg-[#121620] px-4 py-2.5 border-b border-slate-800 flex justify-between items-center gap-2">
+    <!-- Tarjeta Reproductor -->
+    <section id="player-wrapper" class="w-full bg-black rounded-lg overflow-hidden border border-slate-800 shadow-2xl flex flex-col hidden">
+      <div class="bg-[#12151c] px-4 py-3 border-b border-slate-800 flex justify-between items-center gap-2">
         <div class="min-w-0">
-          <h2 id="player-title" class="text-sm md:text-base font-bold text-white truncate">Selecciona un partido de la agenda</h2>
-          <p id="player-subtitle" class="text-xs text-blue-400 truncate">SportHub TV - Emisión en Directo</p>
+          <h2 id="player-title" class="text-base font-bold text-white truncate">Cargando emisión...</h2>
+          <p class="text-xs text-blue-400 truncate">SportHub Pro - Emisión Directa</p>
         </div>
-        <button onclick="toggleFullscreen()" class="btn-live text-xs px-3 py-1.5 flex items-center gap-1 shrink-0">
+        <button onclick="toggleFullscreen()" class="btn-live flex items-center gap-1.5 shrink-0">
           <span>📺</span> <span>Pantalla Completa</span>
         </button>
       </div>
 
-      <div id="player-container" class="relative w-full aspect-video max-h-[65vh] bg-black flex items-center justify-center">
+      <div id="player-container" class="relative w-full aspect-video bg-black flex items-center justify-center">
         <iframe id="iframe-player" class="w-full h-full hidden" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
-        
-        <div id="loading-spinner" class="absolute inset-0 bg-black/90 backdrop-blur-sm hidden flex flex-col items-center justify-center text-center z-20">
-          <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full spinner mb-3"></div>
-          <p class="text-white text-xs font-semibold">Sintonizando señal por Proxy sin anuncios...</p>
+        <div id="loading-spinner" class="absolute inset-0 bg-black/90 flex flex-col items-center justify-center text-center z-20">
+          <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full spinner mb-3"></div>
+          <p class="text-white text-xs font-semibold">Sintonizando canal...</p>
         </div>
-
-        <div id="player-placeholder" class="absolute inset-0 bg-[#0b0d12] flex flex-col items-center justify-center text-center text-slate-400 p-6 z-10">
-          <div class="text-4xl md:text-5xl mb-2 text-blue-500">⚽</div>
-          <p class="text-sm md:text-base font-semibold text-white">Programación de Hoy en Directo</p>
-          <p class="text-xs text-slate-400 mt-1">Haz clic en "Ver en Vivo" o en cualquier canal de la lista inferior.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Buscador y Categorías Píldora (Idénticas a Tarjeta Roja) -->
-    <section class="tr-box p-4 flex flex-col gap-3">
-      <div class="relative">
-        <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido, equipo o competición (ej. Real Madrid, Barcelona, Liga MX, NBA)..." 
-               class="w-full bg-[#0b0d12] border border-slate-700 text-xs text-white placeholder-slate-400 px-4 py-2.5 rounded-lg focus:outline-none focus:border-blue-500">
       </div>
       
-      <div class="flex flex-wrap gap-2 text-xs">
-        <button onclick="filterSport('ALL', this)" class="pill-btn active px-3.5 py-1.5 transition">⭐ Todos</button>
-        <button onclick="filterSport('FÚTBOL', this)" class="pill-btn px-3.5 py-1.5 transition">⚽ Fútbol</button>
-        <button onclick="filterSport('BALONCESTO', this)" class="pill-btn px-3.5 py-1.5 transition">🏀 Baloncesto</button>
-        <button onclick="filterSport('HOCKEY', this)" class="pill-btn px-3.5 py-1.5 transition">🏒 Hockey (NHL)</button>
-        <button onclick="filterSport('AMERICANO', this)" class="pill-btn px-3.5 py-1.5 transition">🏈 Americano (NFL)</button>
-        <button onclick="filterSport('BÉISBOL', this)" class="pill-btn px-3.5 py-1.5 transition">⚾ Béisbol (MLB)</button>
-        <button onclick="filterSport('UFC', this)" class="pill-btn px-3.5 py-1.5 transition">🥊 UFC / Boxeo</button>
-        <button onclick="filterSport('MOTOR', this)" class="pill-btn px-3.5 py-1.5 transition">🏎️ Motor</button>
+      <button onclick="closePlayer()" class="bg-[#12151c] text-slate-400 text-xs py-2 text-center hover:bg-[#1a1e27] hover:text-white transition w-full">
+        Cerrar Reproductor
+      </button>
+    </section>
+
+    <!-- Buscador y Filtros -->
+    <section class="sh-box p-4 flex flex-col gap-4">
+      <div class="relative">
+        <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido, equipo o competición (ej. Real Madrid, Barcelona, Liga MX, NBA)..." 
+               class="w-full sh-input px-4 py-2.5 text-sm">
+      </div>
+      
+      <div class="flex flex-wrap gap-2">
+        <button onclick="filterSport('ALL', this)" class="pill-btn active px-4 py-1.5 transition">⭐ Todos</button>
+        <button onclick="filterSport('FÚTBOL', this)" class="pill-btn px-4 py-1.5 transition">⚽ Fútbol</button>
+        <button onclick="filterSport('BALONCESTO', this)" class="pill-btn px-4 py-1.5 transition">🏀 Baloncesto</button>
+        <button onclick="filterSport('HOCKEY', this)" class="pill-btn px-4 py-1.5 transition">🏒 Hockey (NHL)</button>
+        <button onclick="filterSport('AMERICANO', this)" class="pill-btn px-4 py-1.5 transition">🏈 Americano (NFL)</button>
+        <button onclick="filterSport('BÉISBOL', this)" class="pill-btn px-4 py-1.5 transition">⚾ Béisbol (MLB)</button>
+        <button onclick="filterSport('UFC', this)" class="pill-btn px-4 py-1.5 transition">🥊 UFC / Boxeo</button>
       </div>
     </section>
 
-    <!-- Encabezado de Lista y Tarjetas (Réplica 1:1) -->
+    <!-- Lista de Partidos Estilo Original -->
     <section class="flex flex-col gap-2">
-      <div class="flex justify-between items-center px-1">
-        <h3 class="text-sm font-bold text-amber-400 flex items-center gap-1.5">
-          <span>»</span> Programación de Hoy en SportHub Pro
-        </h3>
-        <span id="match-counter" class="text-xs bg-blue-950 text-blue-300 border border-blue-900 px-3 py-1 rounded-full font-bold">Cargando...</span>
-      </div>
+      <div class="sh-box">
+        <div class="px-4 py-3 border-b border-[#1f2533] flex justify-between items-center bg-[#12151c] rounded-t-lg">
+          <h3 class="text-sm font-bold text-blue-500 flex items-center gap-1.5">
+            <span>»</span> Programación de Hoy en SportHub Pro
+          </h3>
+          <span id="match-counter" class="text-xs bg-[#1a1e27] text-slate-300 border border-[#283042] px-3 py-1 rounded-full font-bold">Cargando...</span>
+        </div>
 
-      <div id="matches-list" class="tr-box overflow-hidden flex flex-col">
-        <div class="text-xs text-slate-500 text-center py-12">Obteniendo agenda de partidos...</div>
+        <div id="matches-list" class="flex flex-col">
+          <div class="text-xs text-slate-500 text-center py-16">Conectando con servidores...</div>
+        </div>
       </div>
     </section>
 
   </main>
-
-  <footer class="bg-[#080a0f] border-t border-slate-900 py-3 text-center text-[11px] text-slate-500">
-    SportHub Pro &copy; 2026 - Emisión adaptable para Móvil, PC y Smart TV
-  </footer>
 
   <script>
     let allMatches = [];
@@ -152,8 +153,7 @@
     function updateSpainClock() {
       const now = new Date();
       const options = { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' };
-      const timeStr = new Intl.DateTimeFormat('es-ES', options).format(now);
-      document.getElementById('clock-spain').textContent = `🇪🇸 CET: ${timeStr}`;
+      document.getElementById('clock-spain').textContent = `CET: ${new Intl.DateTimeFormat('es-ES', options).format(now)}`;
     }
 
     async function fetchAgenda() {
@@ -164,7 +164,7 @@
         allMatches = data.events || [];
         renderMatches();
       } catch (e) {
-        container.innerHTML = '<div class="text-xs text-red-400 text-center py-8">Error de conexión. Pulsa ↻ para reintentar.</div>';
+        container.innerHTML = '<div class="text-xs text-slate-500 text-center py-16">Error al cargar la programación.</div>';
       }
     }
 
@@ -185,75 +185,92 @@
         filtered = filtered.filter(m => m.sport === currentSport);
       }
       if (query) {
-        filtered = filtered.filter(m => m.strEvent.toLowerCase().includes(query) || m.strLeague.toLowerCase().includes(query));
+        filtered = filtered.filter(m => m.strEvent.toLowerCase().includes(query));
       }
 
       counter.textContent = `${filtered.length} Partidos Disponibles`;
       container.innerHTML = '';
 
       if (filtered.length === 0) {
-        container.innerHTML = '<div class="text-xs text-slate-500 text-center py-12">No hay partidos disponibles en esta categoría.</div>';
+        container.innerHTML = '<div class="text-xs text-slate-500 text-center py-16">No hay eventos en esta categoría.</div>';
         return;
       }
+
+      const dateObj = new Date();
+      const currentDay = `${dateObj.getDate()}/${dateObj.getMonth() + 1}`;
 
       filtered.forEach((m) => {
         const row = document.createElement('div');
         const isActive = m.idEvent === activeMatchId;
-        row.className = `tr-row p-3.5 flex flex-col gap-3 ${isActive ? 'bg-[#171f30]' : ''}`;
+        row.className = `sh-row flex flex-col p-4`;
 
         const isLive = m.strTime === 'EN VIVO' || m.strTime === 'En Vivo';
-        const timeBadge = isLive 
-          ? '<span class="text-blue-400 font-bold text-xs animate-pulse">🔴 EN VIVO</span>'
-          : `<div class="bg-[#172033] px-2.5 py-1 rounded text-center border border-[#26324a]"><span class="text-amber-400 font-bold text-xs font-mono block">${escapeHTML(m.strTime)}</span><span class="text-[9px] text-slate-400 block font-sans">Local • 9/11</span></div>`;
+        const timeBox = isLive 
+          ? `<div class="bg-blue-600 text-white font-black text-[11px] px-2 py-1 rounded text-center mb-1">• EN VIVO</div><div class="text-[10px] text-slate-500 text-center">Local • ${currentDay}</div>`
+          : `<div class="time-text mb-1">${escapeHTML(m.strTime)}</div><div class="text-[10px] text-slate-500">Local • ${currentDay}</div>`;
 
-        // Generar título dividiendo por VS si existe
+        let flagIcon = '⚽';
+        if (m.sport === 'BALONCESTO') flagIcon = '🏀';
+        else if (m.sport === 'HOCKEY') flagIcon = '🏒';
+        else if (m.sport === 'AMERICANO') flagIcon = '🏈';
+        else if (m.sport === 'BÉISBOL') flagIcon = '⚾';
+        else if (m.sport === 'UFC') flagIcon = '🥊';
+        else if (m.sport === 'MOTOR') flagIcon = '🏎️';
+
         let eventHtml = '';
         if (m.strEvent.toUpperCase().includes(' VS ')) {
           const parts = m.strEvent.split(/ VS /i);
-          eventHtml = `<span>${escapeHTML(parts[0].trim())}</span> <span class="bg-amber-500/20 text-amber-400 text-[10px] font-black px-1.5 py-0.5 rounded border border-amber-500/40">VS</span> <span>${escapeHTML(parts[1].trim())}</span>`;
+          eventHtml = `<span class="text-white font-bold">${escapeHTML(parts[0].trim())}</span> <span class="vs-badge mx-1.5">VS</span> <span class="text-white font-bold">${escapeHTML(parts[1].trim())}</span>`;
         } else {
-          eventHtml = `<span>${escapeHTML(m.strEvent)}</span>`;
+          eventHtml = `<span class="text-white font-bold">${escapeHTML(m.strEvent)}</span>`;
         }
 
         let channelBtns = '';
         if (m.options && m.options.length > 0) {
           channelBtns = m.options.map((opt) => `
-            <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(opt.url)}')" 
-                    class="bg-[#1e293b] hover:bg-blue-600 hover:text-white text-slate-200 text-xs px-3 py-1.5 rounded flex items-center gap-1.5 border border-slate-700 transition font-medium">
+            <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(opt.url)}')" class="btn-canal-link transition">
               <span>▶ ${escapeHTML(opt.name)}</span>
-              <span class="bg-amber-400 text-black text-[9px] font-bold px-1 rounded">${opt.lang || 'Español'}</span>
+              <span class="bg-[#d97706] text-[#12151c] text-[10px] font-bold px-1.5 py-0.5 rounded">${opt.lang || 'Español'}</span>
             </button>
           `).join('');
         }
 
         row.innerHTML = `
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-            <div class="flex items-center gap-3 min-w-0">
-              <div class="shrink-0">${timeBadge}</div>
-              <div class="shrink-0 text-xl">${m.flag || '⚽'}</div>
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 w-full">
+            <div class="flex items-center gap-4 w-full md:w-auto">
+              <!-- Caja de Hora -->
+              <div class="w-16 shrink-0 time-box">${timeBox}</div>
+              
+              <!-- Bandera Redonda -->
+              <div class="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700 shadow-inner">
+                <span class="text-sm">${flagIcon}</span>
+              </div>
+
+              <!-- Títulos -->
               <div class="min-w-0">
-                <div class="text-[10px] font-bold text-blue-400 uppercase tracking-wider">${escapeHTML(m.sport)}</div>
-                <div class="text-sm font-extrabold text-white flex items-center flex-wrap gap-2 truncate">
+                <div class="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-0.5">${escapeHTML(m.sport)}</div>
+                <div class="text-[13px] flex items-center flex-wrap truncate">
                   ${eventHtml}
                 </div>
               </div>
             </div>
 
-            <div class="flex items-center gap-2 self-end sm:self-auto shrink-0">
-              <button onclick="toggleMatchChannels('${m.idEvent}')" class="bg-[#1e293b] hover:bg-slate-700 text-slate-200 text-xs px-3 py-1.5 rounded border border-slate-700 flex items-center gap-1 font-semibold">
-                <span>Canales</span> <span>▼</span>
+            <!-- Botones Derechos -->
+            <div class="flex items-center gap-2 self-end md:self-auto shrink-0 mt-2 md:mt-0">
+              <button onclick="toggleMatchChannels('${m.idEvent}')" class="btn-canales transition flex items-center gap-1.5">
+                <span>Canales</span> <span id="arrow-${m.idEvent}" class="text-[9px]">${isActive ? '▼' : '►'}</span>
               </button>
-              <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.options[0]?.url || '')}')" class="btn-live text-xs px-3.5 py-1.5 shadow">
+              <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.options[0]?.url || '')}')" class="btn-live transition shadow">
                 Ver en Vivo
               </button>
             </div>
           </div>
 
-          <!-- Acordeón Desplegable Idéntico a Tarjeta Roja -->
-          <div id="channels-${m.idEvent}" class="${isActive ? 'block' : 'hidden'} pt-2.5 border-t border-slate-800/80 mt-1">
-            <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">
-              <span>CANALES Y ENLACES OFICIALES:</span>
-              <span class="text-blue-400">EMISIÓN EN DIRECTO</span>
+          <!-- Acordeón Inferior Oculto -->
+          <div id="channels-${m.idEvent}" class="${isActive ? 'block' : 'hidden'} mt-4 pt-3 border-t border-[#1f2533] w-full">
+            <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider mb-2.5">
+              <span class="text-slate-400">CANALES Y ENLACES OFICIALES:</span>
+              <span class="text-slate-500">EMISIÓN EN DIRECTO</span>
             </div>
             <div class="flex flex-wrap gap-2">
               ${channelBtns}
@@ -266,28 +283,53 @@
 
     function toggleMatchChannels(id) {
       const el = document.getElementById(`channels-${id}`);
-      if (el) el.classList.toggle('hidden');
+      const arrow = document.getElementById(`arrow-${id}`);
+      if (el) {
+        if (el.classList.contains('hidden')) {
+          el.classList.remove('hidden');
+          arrow.textContent = '▼';
+        } else {
+          el.classList.add('hidden');
+          arrow.textContent = '►';
+        }
+      }
     }
 
     function playStream(matchId, title, url) {
       activeMatchId = matchId;
       document.getElementById('player-title').textContent = title;
 
+      const wrapper = document.getElementById('player-wrapper');
       const iframe = document.getElementById('iframe-player');
-      const placeholder = document.getElementById('player-placeholder');
       const spinner = document.getElementById('loading-spinner');
 
-      placeholder.classList.add('hidden');
+      wrapper.classList.remove('hidden');
       spinner.classList.remove('hidden');
+      iframe.classList.add('hidden');
 
-      document.getElementById('player-wrapper').scrollIntoView({ behavior: 'smooth' });
+      wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
       const proxyUrl = `${BACKEND_URL}/api/proxy?url=${encodeURIComponent(url)}`;
-      iframe.classList.remove('hidden');
-      iframe.onload = () => { spinner.classList.add('hidden'); };
+      
+      iframe.onload = () => { 
+        spinner.classList.add('hidden');
+        iframe.classList.remove('hidden');
+      };
       iframe.src = proxyUrl;
 
-      setTimeout(() => spinner.classList.add('hidden'), 3000);
+      setTimeout(() => {
+        spinner.classList.add('hidden');
+        iframe.classList.remove('hidden');
+      }, 4000);
+      
+      renderMatches(); // Para mantener el botón canales abierto
+    }
+
+    function closePlayer() {
+      document.getElementById('player-wrapper').classList.add('hidden');
+      document.getElementById('iframe-player').src = '';
+      activeMatchId = null;
+      renderMatches();
     }
 
     function toggleFullscreen() {
