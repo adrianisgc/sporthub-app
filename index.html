@@ -6,21 +6,21 @@
   <title>SportHub Pro - Deportes en Directo HD</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background-color: #080a0f; color: #e2e8f0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: #0b0d12; color: #e5e7eb; font-family: system-ui, -apple-system, sans-serif; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
 
-    /* Cabecera Estilo Tarjeta Roja en Azul */
+    /* Cabecera idéntica a Tarjeta Roja en Azul */
     .sh-header { background: linear-gradient(180deg, #1e3a8a 0%, #1e293b 100%); border-bottom: 2px solid #2563eb; }
     .sh-nav-item { color: #ffffff; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
     .sh-nav-item:hover { color: #93c5fd; }
 
-    /* Estructura Tarjetas IDÉNTICA a Tarjeta Roja */
-    .tr-box { background-color: #111622; border: 1px solid #1e2738; border-radius: 8px; }
-    .tr-row { background-color: #111622; border-bottom: 1px solid #1a2233; transition: all 0.15s ease; }
+    /* Estructura Tarjetas IDÉNTICA */
+    .tr-box { background-color: #121620; border: 1px solid #1e2638; border-radius: 8px; }
+    .tr-row { background-color: #121620; border-bottom: 1px solid #1a2233; transition: all 0.15s ease; }
     .tr-row:hover { background-color: #171f30; }
 
-    /* Filtros Píldora Identicos */
+    /* Botones Píldora Identicos */
     .pill-btn { background-color: #171f30; color: #94a3b8; border: 1px solid #232e45; border-radius: 9999px; font-size: 12px; }
     .pill-btn:hover { background-color: #232e45; color: #ffffff; }
     .pill-btn.active { background-color: #2563eb; color: #ffffff; border-color: #3b82f6; font-weight: bold; }
@@ -39,7 +39,7 @@
 
   <!-- Header Superior Réplica Exacta -->
   <header class="sh-header shadow-lg sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+    <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
       <div class="flex items-center gap-2 font-black text-xl text-white tracking-tight cursor-pointer" onclick="fetchAgenda()">
         <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-black shadow">LIVE</span>
         <span>SPORTHUB <span class="text-blue-400 font-normal">PRO</span></span>
@@ -62,7 +62,7 @@
 
   <main class="max-w-6xl mx-auto w-full flex-1 p-3 md:p-5 flex flex-col gap-4">
 
-    <!-- Tarjeta Informativa Superior (Idéntica a la captura) -->
+    <!-- Tarjeta Informativa Superior (Idéntica a Tarjeta Roja) -->
     <section class="tr-box p-4 text-center text-xs text-slate-300">
       <p class="max-w-4xl mx-auto leading-relaxed">
         <strong class="text-white">SportHub Pro</strong> reúne toda la programación de <strong class="text-white">fútbol en vivo</strong>, los <strong class="text-white">partidos de hoy</strong> y los próximos enfrentamientos en HD. Consulta fechas, horarios, calendarios y señales de las grandes competiciones como <strong class="text-blue-400">LaLiga, Champions League, NBA, Premier League y F1</strong> sin cortes.
@@ -71,7 +71,7 @@
 
     <!-- Reproductor Integrado -->
     <section id="player-wrapper" class="w-full bg-black rounded-xl overflow-hidden border border-slate-800 shadow-2xl flex flex-col">
-      <div class="bg-[#111622] px-4 py-2.5 border-b border-slate-800 flex justify-between items-center gap-2">
+      <div class="bg-[#121620] px-4 py-2.5 border-b border-slate-800 flex justify-between items-center gap-2">
         <div class="min-w-0">
           <h2 id="player-title" class="text-sm md:text-base font-bold text-white truncate">Selecciona un partido de la agenda</h2>
           <p id="player-subtitle" class="text-xs text-blue-400 truncate">SportHub TV - Emisión en Directo</p>
@@ -89,7 +89,7 @@
           <p class="text-white text-xs font-semibold">Sintonizando señal por Proxy sin anuncios...</p>
         </div>
 
-        <div id="player-placeholder" class="absolute inset-0 bg-[#080a0f] flex flex-col items-center justify-center text-center text-slate-400 p-6 z-10">
+        <div id="player-placeholder" class="absolute inset-0 bg-[#0b0d12] flex flex-col items-center justify-center text-center text-slate-400 p-6 z-10">
           <div class="text-4xl md:text-5xl mb-2 text-blue-500">⚽</div>
           <p class="text-sm md:text-base font-semibold text-white">Programación de Hoy en Directo</p>
           <p class="text-xs text-slate-400 mt-1">Haz clic en "Ver en Vivo" o en cualquier canal de la lista inferior.</p>
@@ -97,11 +97,11 @@
       </div>
     </section>
 
-    <!-- Buscador y Categorías Píldora (Idénticas a la captura) -->
+    <!-- Buscador y Categorías Píldora (Idénticas a Tarjeta Roja) -->
     <section class="tr-box p-4 flex flex-col gap-3">
       <div class="relative">
         <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido, equipo o competición (ej. Real Madrid, Barcelona, Liga MX, NBA)..." 
-               class="w-full bg-[#080a0f] border border-slate-700 text-xs text-white placeholder-slate-400 px-4 py-2.5 rounded-lg focus:outline-none focus:border-blue-500">
+               class="w-full bg-[#0b0d12] border border-slate-700 text-xs text-white placeholder-slate-400 px-4 py-2.5 rounded-lg focus:outline-none focus:border-blue-500">
       </div>
       
       <div class="flex flex-wrap gap-2 text-xs">
@@ -116,7 +116,7 @@
       </div>
     </section>
 
-    <!-- Lista de Partidos (Estructura 1:1 de Tarjeta Roja) -->
+    <!-- Encabezado de Lista y Tarjetas (Réplica 1:1) -->
     <section class="flex flex-col gap-2">
       <div class="flex justify-between items-center px-1">
         <h3 class="text-sm font-bold text-amber-400 flex items-center gap-1.5">
@@ -132,7 +132,7 @@
 
   </main>
 
-  <footer class="bg-[#05070a] border-t border-slate-900 py-3 text-center text-[11px] text-slate-500">
+  <footer class="bg-[#080a0f] border-t border-slate-900 py-3 text-center text-[11px] text-slate-500">
     SportHub Pro &copy; 2026 - Emisión adaptable para Móvil, PC y Smart TV
   </footer>
 
@@ -204,14 +204,24 @@
         const isLive = m.strTime === 'EN VIVO' || m.strTime === 'En Vivo';
         const timeBadge = isLive 
           ? '<span class="text-blue-400 font-bold text-xs animate-pulse">🔴 EN VIVO</span>'
-          : `<div class="bg-[#172033] px-2.5 py-1 rounded text-center"><span class="text-amber-400 font-bold text-xs font-mono">${escapeHTML(m.strTime)}</span><span class="text-[9px] text-slate-400 block">Local</span></div>`;
+          : `<div class="bg-[#172033] px-2.5 py-1 rounded text-center border border-[#26324a]"><span class="text-amber-400 font-bold text-xs font-mono block">${escapeHTML(m.strTime)}</span><span class="text-[9px] text-slate-400 block font-sans">Local • 9/11</span></div>`;
+
+        // Generar título dividiendo por VS si existe
+        let eventHtml = '';
+        if (m.strEvent.toUpperCase().includes(' VS ')) {
+          const parts = m.strEvent.split(/ VS /i);
+          eventHtml = `<span>${escapeHTML(parts[0].trim())}</span> <span class="bg-amber-500/20 text-amber-400 text-[10px] font-black px-1.5 py-0.5 rounded border border-amber-500/40">VS</span> <span>${escapeHTML(parts[1].trim())}</span>`;
+        } else {
+          eventHtml = `<span>${escapeHTML(m.strEvent)}</span>`;
+        }
 
         let channelBtns = '';
         if (m.options && m.options.length > 0) {
           channelBtns = m.options.map((opt) => `
             <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(opt.url)}')" 
                     class="bg-[#1e293b] hover:bg-blue-600 hover:text-white text-slate-200 text-xs px-3 py-1.5 rounded flex items-center gap-1.5 border border-slate-700 transition font-medium">
-              <span>▶</span> <span>${escapeHTML(opt.name)}</span>
+              <span>▶ ${escapeHTML(opt.name)}</span>
+              <span class="bg-amber-400 text-black text-[9px] font-bold px-1 rounded">${opt.lang || 'Español'}</span>
             </button>
           `).join('');
         }
@@ -220,9 +230,12 @@
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div class="flex items-center gap-3 min-w-0">
               <div class="shrink-0">${timeBadge}</div>
+              <div class="shrink-0 text-xl">${m.flag || '⚽'}</div>
               <div class="min-w-0">
                 <div class="text-[10px] font-bold text-blue-400 uppercase tracking-wider">${escapeHTML(m.sport)}</div>
-                <div class="text-sm font-extrabold text-white truncate">${escapeHTML(m.strEvent)}</div>
+                <div class="text-sm font-extrabold text-white flex items-center flex-wrap gap-2 truncate">
+                  ${eventHtml}
+                </div>
               </div>
             </div>
 
@@ -238,7 +251,10 @@
 
           <!-- Acordeón Desplegable Idéntico a Tarjeta Roja -->
           <div id="channels-${m.idEvent}" class="${isActive ? 'block' : 'hidden'} pt-2.5 border-t border-slate-800/80 mt-1">
-            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">CANALES Y ENLACES OFICIALES: EMISIÓN EN DIRECTO</div>
+            <div class="flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">
+              <span>CANALES Y ENLACES OFICIALES:</span>
+              <span class="text-blue-400">EMISIÓN EN DIRECTO</span>
+            </div>
             <div class="flex flex-wrap gap-2">
               ${channelBtns}
             </div>
