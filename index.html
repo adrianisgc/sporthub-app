@@ -25,6 +25,10 @@
     .btn-blue { background-color: #2563eb; color: #ffffff; font-weight: bold; border-radius: 6px; }
     .btn-blue:hover { background-color: #1d4ed8; }
 
+    .btn-option { background-color: #1e293b; color: #cbd5e1; border: 1px solid #334155; }
+    .btn-option:hover { background-color: #3b82f6; color: #ffffff; border-color: #60a5fa; }
+    .btn-option.active { background-color: #2563eb; color: #ffffff; border-color: #60a5fa; font-weight: bold; }
+
     button:focus, input:focus, a:focus { outline: 2px solid #3b82f6 !important; outline-offset: 2px; }
 
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -71,18 +75,26 @@
         </button>
       </div>
 
+      <!-- Barra Superior de Opciones del Reproductor Activo -->
+      <div id="player-options-bar" class="bg-[#0b1120] px-4 py-2 border-b border-slate-800 flex items-center gap-2 overflow-x-auto text-xs hidden">
+        <span class="text-slate-400 font-semibold shrink-0">Cambiar Emisión:</span>
+        <div id="player-options-list" class="flex items-center gap-1.5">
+          <!-- Opciones dinámicas aquí -->
+        </div>
+      </div>
+
       <div id="player-container" class="relative w-full aspect-video max-h-[65vh] bg-black flex items-center justify-center">
         <iframe id="iframe-player" class="w-full h-full hidden" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
         
         <div id="loading-spinner" class="absolute inset-0 bg-black/90 backdrop-blur-sm hidden flex flex-col items-center justify-center text-center z-20">
           <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full spinner mb-3"></div>
-          <p class="text-white text-xs font-semibold">Sintonizando emisión en directo por Proxy...</p>
+          <p class="text-white text-xs font-semibold">Sintonizando señal por Proxy...</p>
         </div>
 
         <div id="player-placeholder" class="absolute inset-0 bg-[#06090e] flex flex-col items-center justify-center text-center text-slate-400 p-6 z-10">
           <div class="text-4xl md:text-5xl mb-2 text-blue-500">⚽</div>
           <p class="text-sm md:text-base font-semibold text-white">Programación Deportiva en Directo</p>
-          <p class="text-xs text-slate-400 mt-1">Haz clic en "Ver en Vivo" o en cualquier canal de la lista inferior.</p>
+          <p class="text-xs text-slate-400 mt-1">Haz clic en cualquier partido o elige una de sus opciones para emitir.</p>
         </div>
       </div>
     </section>
@@ -128,6 +140,7 @@
     let allMatches = [];
     let currentSport = 'ALL';
     let activeMatchId = null;
+    let activeOptionIndex = 0;
 
     const BACKEND_URL = 'https://sporthub-backend-xhxz.onrender.com';
 
@@ -196,9 +209,9 @@
 
         let channelBtns = '';
         if (m.options && m.options.length > 0) {
-          channelBtns = m.options.map((opt) => `
-            <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(opt.url)}')" 
-                    class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-3 py-1.5 rounded flex items-center gap-1.5 border border-slate-700 transition">
+          channelBtns = m.options.map((opt, idx) => `
+            <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(opt.url)}', ${idx})" 
+                    class="btn-option text-xs px-3 py-1.5 rounded flex items-center gap-1.5 transition ${isActive && idx === activeOptionIndex ? 'active' : ''}">
               <span>▶</span> <span>${escapeHTML(opt.name)}</span>
             </button>
           `).join('');
@@ -216,16 +229,16 @@
 
             <div class="flex items-center gap-2 self-end sm:self-auto">
               <button onclick="toggleMatchChannels('${m.idEvent}')" class="bg-slate-800 text-slate-300 text-xs px-3 py-1.5 rounded border border-slate-700 flex items-center gap-1">
-                <span>Canales</span> <span>▼</span>
+                <span>Ver Emisiones (${m.options.length})</span> <span>▼</span>
               </button>
-              <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.options[0]?.url || '')}')" class="btn-blue text-xs px-3.5 py-1.5 shadow">
-                Ver en Vivo
+              <button onclick="playStream('${m.idEvent}', '${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.options[0]?.url || '')}', 0)" class="btn-blue text-xs px-3.5 py-1.5 shadow">
+                Ver Partido
               </button>
             </div>
           </div>
 
           <div id="channels-${m.idEvent}" class="${isActive ? 'block' : 'hidden'} pt-2 border-t border-slate-800/80 mt-1">
-            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">SEÑALES DISPONIBLES EN DIRECTO:</div>
+            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">SELECCIONA UNA EMISIÓN:</div>
             <div class="flex flex-wrap gap-2">
               ${channelBtns}
             </div>
@@ -240,9 +253,32 @@
       if (el) el.classList.toggle('hidden');
     }
 
-    function playStream(matchId, title, url) {
+    function playStream(matchId, title, url, optionIdx = 0) {
       activeMatchId = matchId;
+      activeOptionIndex = optionIdx;
+      
+      const match = allMatches.find(m => m.idEvent === matchId);
+      
       document.getElementById('player-title').textContent = title;
+      document.getElementById('player-subtitle').textContent = `Emisión activa: ${match && match.options[optionIdx] ? match.options[optionIdx].name : 'Opción ' + (optionIdx + 1)}`;
+
+      // Renderizar la barra de selector de emisiones arriba del reproductor
+      const optionsBar = document.getElementById('player-options-bar');
+      const optionsList = document.getElementById('player-options-list');
+      
+      if (match && match.options && match.options.length > 0) {
+        optionsBar.classList.remove('hidden');
+        optionsList.innerHTML = match.options.map((opt, idx) => `
+          <button onclick="playStream('${matchId}', '${escapeQuotes(title)}', '${escapeQuotes(opt.url)}', ${idx})" 
+                  class="btn-option text-xs px-2.5 py-1 rounded transition ${idx === optionIdx ? 'active' : ''}">
+            ${escapeHTML(opt.name)}
+          </button>
+        `).join('');
+      } else {
+        optionsBar.classList.add('hidden');
+      }
+
+      renderMatches();
 
       const iframe = document.getElementById('iframe-player');
       const placeholder = document.getElementById('player-placeholder');
