@@ -2,14 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Tarjeta Roja - Fútbol en Vivo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Colores exactos de la web original */
+    /* Colores exactos TR */
     :root {
       --bg-body: #0c0f14;
-      --bg-header: #cc0000; /* Rojo Tarjeta Roja */
+      --bg-header: #cc0000; 
       --bg-card: #151821;
       --bg-row: #161922;
       --bg-row-hover: #1c1f2b;
@@ -21,20 +21,19 @@
       --gray-btn-hover: #2a3140;
       
       --text-gold: #eab308;
-      --text-red: #ef4444;
     }
 
     body { background-color: var(--bg-body); color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; }
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
 
-    /* Cabecera Roja Original */
+    /* Cabecera TR */
     .tr-header { background-color: var(--bg-header); border-bottom: 2px solid #990000; }
     .tr-nav-item { color: #ffffff; font-weight: 700; font-size: 13px; padding: 0 12px; transition: color 0.2s; }
     .tr-nav-item:hover { color: #facc15; }
     .tr-nav-item.active { border-bottom: 3px solid #facc15; padding-bottom: 14px; }
 
-    /* Contenedores */
+    /* Componentes */
     .tr-box { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; }
     .tr-row { background-color: var(--bg-row); border-bottom: 1px solid var(--border-color); transition: background-color 0.15s; }
     .tr-row:hover { background-color: var(--bg-row-hover); }
@@ -44,33 +43,38 @@
     .search-input { background-color: #111319; border: 1px solid var(--border-color); color: #fff; width: 100%; border-radius: 6px; }
     .search-input:focus { outline: none; border-color: #4b5563; }
     
-    .pill { background-color: var(--gray-btn); color: #9ca3af; border: 1px solid var(--border-color); border-radius: 9999px; padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+    .pill { background-color: var(--gray-btn); color: #9ca3af; border: 1px solid var(--border-color); border-radius: 9999px; padding: 6px 14px; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; white-space: nowrap; }
     .pill:hover { background-color: var(--gray-btn-hover); color: #fff; }
     .pill.active { background-color: var(--red-btn); border-color: var(--red-btn); color: #fff; font-weight: 700; }
 
     /* Elementos del Partido */
-    .time-val { color: var(--text-gold); font-size: 16px; font-weight: 900; font-family: monospace; }
-    .time-sub { color: #6b7280; font-size: 11px; margin-top: 2px; }
+    .time-val { color: var(--text-gold); font-size: 15px; font-weight: 900; font-family: monospace; }
+    @media (min-width: 768px) { .time-val { font-size: 16px; } }
+    .time-sub { color: #6b7280; font-size: 10px; margin-top: 2px; }
     
     /* Cuadrado EN VIVO rojo */
-    .live-box { background-color: var(--red-btn); border-radius: 4px; padding: 6px 0; text-align: center; width: 60px; box-shadow: 0 0 8px rgba(220, 38, 38, 0.4); }
-    .live-val { color: #fff; font-size: 13px; font-weight: 900; line-height: 1.1; }
-    .live-dot { display: inline-block; width: 6px; height: 6px; background-color: #fff; border-radius: 50%; margin-bottom: 2px; animation: pulse 1.5s infinite; }
+    .live-box { background-color: var(--red-btn); border-radius: 4px; padding: 6px 0; text-align: center; width: 55px; box-shadow: 0 0 8px rgba(220, 38, 38, 0.4); }
+    @media (min-width: 768px) { .live-box { width: 60px; } }
+    .live-val { color: #fff; font-size: 11px; font-weight: 900; line-height: 1.1; }
+    @media (min-width: 768px) { .live-val { font-size: 13px; } }
+    .live-dot { display: inline-block; width: 5px; height: 5px; background-color: #fff; border-radius: 50%; margin-bottom: 2px; animation: pulse 1.5s infinite; }
 
     /* VS Dorado */
-    .vs-box { background-color: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.2); color: var(--text-gold); font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 3px; margin: 0 8px; }
+    .vs-box { background-color: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.2); color: var(--text-gold); font-size: 9px; font-weight: 900; padding: 2px 5px; border-radius: 3px; margin: 0 4px; }
+    @media (min-width: 768px) { .vs-box { font-size: 10px; margin: 0 8px; padding: 2px 6px; } }
 
     /* Botones de acción */
-    .btn-canales { background-color: var(--gray-btn); border: 1px solid var(--border-color); color: #e5e7eb; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 4px; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+    .btn-canales { background-color: var(--gray-btn); border: 1px solid var(--border-color); color: #e5e7eb; font-weight: 600; border-radius: 4px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; }
     .btn-canales:hover { background-color: var(--gray-btn-hover); }
     
-    .btn-play { background-color: var(--red-btn); color: #fff; font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 4px; transition: background-color 0.2s; }
+    .btn-play { background-color: var(--red-btn); color: #fff; font-weight: 700; border-radius: 4px; transition: background-color 0.2s; display: flex; align-items: center; justify-content: center; }
     .btn-play:hover { background-color: var(--red-btn-hover); }
 
-    /* Botones de canales en el desplegable */
-    .channel-link { background-color: var(--gray-btn); border: 1px solid var(--border-color); color: #fff; font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 4px; display: inline-flex; align-items: center; gap: 8px; transition: background-color 0.2s; }
+    /* Acordeón Canales */
+    .channel-link { background-color: var(--gray-btn); border: 1px solid var(--border-color); color: #fff; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; transition: background-color 0.2s; }
+    @media (min-width: 768px) { .channel-link { font-size: 12px; padding: 6px 12px; gap: 8px; } }
     .channel-link:hover { background-color: var(--gray-btn-hover); }
-    .lang-badge { background-color: rgba(234, 179, 8, 0.15); color: var(--text-gold); border: 1px solid rgba(234, 179, 8, 0.3); font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 3px; }
+    .lang-badge { background-color: rgba(234, 179, 8, 0.15); color: var(--text-gold); border: 1px solid rgba(234, 179, 8, 0.3); font-size: 9px; font-weight: 700; padding: 1px 4px; border-radius: 3px; }
 
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -79,79 +83,81 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- Header Rojo Exacto -->
+  <!-- Header Rojo TR -->
   <header class="tr-header sticky top-0 z-30 shadow-lg">
-    <div class="max-w-6xl mx-auto px-4 flex justify-between items-center h-[60px]">
+    <div class="max-w-6xl mx-auto px-3 md:px-4 flex justify-between items-center h-[55px] md:h-[60px]">
       <div class="flex items-center gap-2 cursor-pointer" onclick="fetchAgenda()">
-        <!-- Simulación del logo de la tarjeta roja -->
-        <div class="bg-white rounded p-1 w-8 h-8 flex items-center justify-center shadow">
-          <div class="bg-red-600 w-4 h-5 rounded-sm transform -rotate-12"></div>
+        <div class="bg-white rounded p-1 w-7 h-7 md:w-8 md:h-8 flex items-center justify-center shadow">
+          <div class="bg-red-600 w-3 h-4 md:w-4 md:h-5 rounded-sm transform -rotate-12"></div>
         </div>
-        <span class="font-black text-2xl text-white tracking-tight" style="font-family: Arial, sans-serif;">Tarjeta Roja</span>
+        <span class="font-black text-xl md:text-2xl text-white tracking-tight" style="font-family: Arial, sans-serif;">Tarjeta Roja</span>
       </div>
       
-      <nav class="hidden md:flex items-center h-full pt-4">
+      <!-- Menú oculto en móvil, visible en PC -->
+      <nav class="hidden lg:flex items-center h-full pt-4">
         <a href="#" class="tr-nav-item active">PROGRAMACIÓN</a>
         <a href="#" class="tr-nav-item">PARTIDOS DE HOY</a>
         <a href="#" class="tr-nav-item">CANALES TV</a>
         <a href="#" class="tr-nav-item">GUÍA & FAQ</a>
-        <a href="#" class="tr-nav-item">AVISO LEGAL</a>
       </nav>
 
-      <button onclick="fetchAgenda()" class="text-white hover:text-yellow-400" title="Recargar">↻</button>
+      <button onclick="fetchAgenda()" class="text-white hover:text-yellow-400 text-lg md:text-base px-2" title="Recargar">↻</button>
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto w-full flex-1 p-3 md:p-5 flex flex-col gap-5">
+  <main class="max-w-6xl mx-auto w-full flex-1 p-2 md:p-5 flex flex-col gap-3 md:gap-5 mt-2 md:mt-0">
 
-    <!-- Reproductor de Video -->
+    <!-- Buscador y Píldoras (Responsive) -->
+    <section class="tr-box p-3 md:p-4 flex flex-col gap-3 md:gap-4">
+      <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido, equipo..." class="search-input px-3 md:px-4 py-2 md:py-2.5 text-xs md:text-[13px]">
+      
+      <!-- Scroll horizontal oculto en móvil para las píldoras -->
+      <div class="flex overflow-x-auto pb-1 md:pb-0 md:flex-wrap gap-2 snap-x hide-scroll">
+        <button onclick="filterSport('ALL', this)" class="pill active snap-start">⭐ Todos</button>
+        <button onclick="filterSport('FÚTBOL', this)" class="pill snap-start">⚽ Fútbol</button>
+        <button onclick="filterSport('BALONCESTO', this)" class="pill snap-start">🏀 Baloncesto</button>
+        <button onclick="filterSport('HOCKEY', this)" class="pill snap-start">🏒 Hockey (NHL)</button>
+        <button onclick="filterSport('AMERICANO', this)" class="pill snap-start">🏈 NFL</button>
+        <button onclick="filterSport('BÉISBOL', this)" class="pill snap-start">⚾ MLB</button>
+        <button onclick="filterSport('MOTOR', this)" class="pill snap-start">🏎️ Motor</button>
+        <button onclick="filterSport('UFC', this)" class="pill snap-start">🥊 UFC</button>
+      </div>
+    </section>
+
+    <!-- Reproductor de Video (Se muestra al hacer click) -->
     <section id="player-wrapper" class="w-full bg-black rounded-lg overflow-hidden border border-gray-800 shadow-2xl hidden">
-      <div class="bg-[#151821] px-4 py-3 border-b border-gray-800 flex justify-between items-center">
-        <div>
-          <h2 id="player-title" class="text-sm font-bold text-white">Cargando...</h2>
-          <p class="text-[11px] text-red-500 font-bold uppercase">Emisión en Directo</p>
+      <div class="bg-[#151821] px-3 md:px-4 py-2 md:py-3 border-b border-gray-800 flex justify-between items-center">
+        <div class="min-w-0 pr-2">
+          <h2 id="player-title" class="text-xs md:text-sm font-bold text-white truncate">Cargando...</h2>
+          <p class="text-[9px] md:text-[11px] text-red-500 font-bold uppercase truncate">Emisión en Directo</p>
         </div>
-        <button onclick="toggleFullscreen()" class="btn-play flex items-center gap-1.5 text-xs">
-          📺 Pantalla Completa
+        <button onclick="toggleFullscreen()" class="btn-play px-2 md:px-3 py-1 md:py-1.5 flex items-center gap-1 text-[10px] md:text-xs shrink-0">
+          📺 <span class="hidden sm:inline">Pantalla Completa</span>
         </button>
       </div>
       <div id="player-container" class="relative w-full aspect-video bg-black flex items-center justify-center">
         <iframe id="iframe-player" class="w-full h-full hidden" frameborder="0" allowfullscreen></iframe>
         <div id="loading-spinner" class="absolute inset-0 bg-[#0c0f14] flex flex-col items-center justify-center">
-          <div class="spinner mb-3"></div>
-          <p class="text-white text-sm font-bold">Conectando señal...</p>
+          <div class="spinner mb-2 md:mb-3"></div>
+          <p class="text-white text-xs md:text-sm font-bold">Conectando señal...</p>
         </div>
       </div>
-      <button onclick="closePlayer()" class="w-full bg-[#151821] text-gray-400 hover:text-white py-2.5 text-xs font-bold transition">Cerrar Reproductor</button>
+      <button onclick="closePlayer()" class="w-full bg-[#151821] text-gray-400 hover:text-white py-2 md:py-2.5 text-[11px] md:text-xs font-bold transition border-t border-gray-800">Cerrar Reproductor</button>
     </section>
 
-    <!-- Buscador y Píldoras -->
-    <section class="tr-box p-4 flex flex-col gap-4">
-      <input type="text" id="search-input" oninput="renderMatches()" placeholder="🔍 Buscar partido, equipo o competición (ej. Real Madrid, Barcelona, Liga MX, NBA)..." class="search-input px-4 py-2.5 text-[13px]">
-      <div class="flex flex-wrap gap-2">
-        <button onclick="filterSport('ALL', this)" class="pill active">⭐ Todos</button>
-        <button onclick="filterSport('FÚTBOL', this)" class="pill">⚽ Fútbol</button>
-        <button onclick="filterSport('BALONCESTO', this)" class="pill">🏀 Baloncesto</button>
-        <button onclick="filterSport('HOCKEY', this)" class="pill">🏒 Hockey (NHL)</button>
-        <button onclick="filterSport('AMERICANO', this)" class="pill">🏈 Americano (NFL)</button>
-        <button onclick="filterSport('BÉISBOL', this)" class="pill">⚾ Béisbol (MLB)</button>
-        <button onclick="filterSport('UFC', this)" class="pill">🥊 UFC / Boxeo</button>
-      </div>
-    </section>
-
-    <!-- Lista de Partidos (Estructura idéntica a la captura) -->
-    <section class="flex flex-col gap-0">
-      <!-- Encabezado con título dorado y contador rojo oscuro -->
-      <div class="tr-box rounded-b-none border-b-0 px-4 py-3.5 flex justify-between items-center relative overflow-hidden">
+    <!-- Lista de Partidos -->
+    <section class="flex flex-col gap-0 mb-4">
+      <!-- Encabezado de Lista TR -->
+      <div class="tr-box rounded-b-none border-b-0 px-3 md:px-4 py-2.5 md:py-3.5 flex justify-between items-center relative overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-[2px] bg-red-600"></div>
-        <h3 class="text-[14px] font-black text-[#eab308]">» Programación de Hoy en Tarjeta Roja TV y Roja Directa</h3>
-        <span id="match-counter" class="bg-[#2d1115] border border-red-900 text-red-500 text-[11px] px-3 py-1 rounded-full font-bold">Cargando...</span>
+        <h3 class="text-xs md:text-[14px] font-black text-[#eab308] truncate pr-2">» Programación de Hoy</h3>
+        <span id="match-counter" class="bg-[#2d1115] border border-red-900 text-red-500 text-[9px] md:text-[11px] px-2 md:px-3 py-0.5 md:py-1 rounded-full font-bold shrink-0">Cargando...</span>
       </div>
 
-      <!-- Contenedor de filas de partidos -->
+      <!-- Contenedor Partidos -->
       <div id="matches-list" class="tr-box rounded-t-none flex flex-col">
-        <div class="text-sm text-gray-500 text-center py-20 flex flex-col items-center">
-          <div class="spinner mb-4"></div>
+        <div class="text-xs md:text-sm text-gray-500 text-center py-16 flex flex-col items-center">
+          <div class="spinner mb-3"></div>
           Obteniendo programación en directo...
         </div>
       </div>
@@ -159,8 +165,8 @@
 
   </main>
 
-  <footer class="bg-[#050505] border-t border-[#1a1a1c] py-5 text-center text-xs text-gray-600 mt-8">
-    Tarjeta Roja &copy; 2026 - Fútbol en Vivo, Partidos de Hoy y Calendario de las Grandes Ligas
+  <footer class="bg-[#050505] border-t border-[#1a1a1c] py-4 text-center text-[10px] md:text-xs text-gray-600">
+    Tarjeta Roja &copy; 2026 - Emisión adaptable para Móvil, PC y Smart TV
   </footer>
 
   <script>
@@ -181,10 +187,10 @@
             allMatches = data.events;
             renderMatches();
         } else {
-            container.innerHTML = '<div class="text-sm text-red-500 text-center py-20 font-bold">Error de conexión. Intente recargar.</div>';
+            container.innerHTML = '<div class="text-xs md:text-sm text-red-500 text-center py-16 font-bold">Error de conexión. Intente recargar.</div>';
         }
       } catch (e) {
-        container.innerHTML = '<div class="text-sm text-red-500 text-center py-20 font-bold">Fallo en la comunicación con el servidor.</div>';
+        container.innerHTML = '<div class="text-xs md:text-sm text-red-500 text-center py-16 font-bold">Fallo de red. Pulsa recargar (↻).</div>';
       }
     }
 
@@ -204,11 +210,11 @@
       if (currentSport !== 'ALL') filtered = filtered.filter(m => m.sport === currentSport);
       if (query) filtered = filtered.filter(m => m.strEvent.toLowerCase().includes(query));
 
-      counter.textContent = `${filtered.length} Partidos Disponibles`;
+      counter.textContent = `${filtered.length} Partidos`;
       container.innerHTML = '';
 
       if (filtered.length === 0) {
-        container.innerHTML = '<div class="text-sm text-gray-500 text-center py-20 font-bold">No hay eventos para mostrar.</div>';
+        container.innerHTML = '<div class="text-xs md:text-sm text-gray-500 text-center py-16 font-bold">No hay eventos para mostrar.</div>';
         return;
       }
 
@@ -217,72 +223,67 @@
 
       filtered.forEach((m) => {
         const row = document.createElement('div');
-        row.className = 'tr-row p-4 flex flex-col w-full';
+        row.className = 'tr-row p-3 md:p-4 flex flex-col w-full';
 
         const isLive = m.strTime === 'EN VIVO';
         const timeElement = isLive 
-          ? `<div class="live-box"><div class="live-val"><span class="live-dot"></span><br>EN<br>VIVO</div></div><div class="time-sub text-center w-[60px]">Local • ${dateStr}</div>`
-          : `<div class="time-val w-[60px] text-center">${escapeHTML(m.strTime)}</div><div class="time-sub text-center w-[60px]">Local • ${dateStr}</div>`;
+          ? `<div class="live-box"><div class="live-val"><span class="live-dot"></span><br>EN<br>VIVO</div></div><div class="time-sub text-center w-[55px] md:w-[60px]">Local • ${dateStr}</div>`
+          : `<div class="time-val w-[55px] md:w-[60px] text-center">${escapeHTML(m.strTime)}</div><div class="time-sub text-center w-[55px] md:w-[60px]">Local • ${dateStr}</div>`;
 
-        // Generar título con el VS en cajita dorada
         let eventHtml = m.strEvent;
         if (m.strEvent.toUpperCase().includes(' VS ')) {
             const parts = m.strEvent.split(/ VS /i);
-            eventHtml = `<span class="text-white font-bold text-[14px]">${escapeHTML(parts[0].trim())}</span><span class="vs-box">VS</span><span class="text-white font-bold text-[14px]">${escapeHTML(parts[1].trim())}</span>`;
+            eventHtml = `<span class="text-white font-bold">${escapeHTML(parts[0].trim())}</span><span class="vs-box">VS</span><span class="text-white font-bold">${escapeHTML(parts[1].trim())}</span>`;
         } else {
-            eventHtml = `<span class="text-white font-bold text-[14px]">${escapeHTML(m.strEvent)}</span>`;
+            eventHtml = `<span class="text-white font-bold">${escapeHTML(m.strEvent)}</span>`;
         }
-
-        // Icono generico de escudo
-        let iconHtml = `<div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-inner shrink-0 mr-1"><span class="text-lg text-black">⚽</span></div>`;
 
         let channelsHtml = '';
         if (m.options && m.options.length > 0) {
             channelsHtml = m.options.map(opt => `
                 <button onclick="playStream('${escapeQuotes(m.strEvent)}', '${escapeQuotes(opt.url)}')" class="channel-link">
                     <span>► ${escapeHTML(opt.name)}</span>
-                    <span class="lang-badge">${opt.lang}</span>
+                    <span class="lang-badge">${opt.lang || 'ES'}</span>
                 </button>
             `).join('');
         }
 
+        /* DISEÑO RESPONSIVE: En móvil, los botones de acción se ponen abajo y ocupan toda la línea. En PC, a la derecha. */
         row.innerHTML = `
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-3 md:gap-4">
             
-            <!-- Izquierda: Hora, Logo, Título -->
-            <div class="flex items-center gap-4 min-w-0 flex-1">
-              <div class="flex flex-col items-center shrink-0 w-[60px]">
+            <!-- Izquierda: Hora + Título -->
+            <div class="flex items-center gap-3 w-full min-w-0">
+              <div class="flex flex-col items-center shrink-0 w-[55px] md:w-[60px]">
                 ${timeElement}
               </div>
               
-              ${iconHtml}
-              
               <div class="min-w-0 flex-1">
-                <div class="text-[10px] font-black text-red-500 uppercase tracking-widest mb-0.5">${escapeHTML(m.sport)}</div>
-                <div class="flex items-center flex-wrap truncate">
+                <div class="text-[9px] md:text-[10px] font-black text-red-500 uppercase tracking-widest mb-0.5">${escapeHTML(m.sport)}</div>
+                <div class="text-xs md:text-[14px] flex items-center flex-wrap leading-snug">
                   ${eventHtml}
                 </div>
               </div>
             </div>
 
-            <!-- Derecha: Botones -->
-            <div class="flex items-center gap-2 shrink-0 self-end md:self-auto">
-              <button onclick="toggleChannels('${m.idEvent}')" class="btn-canales">
-                Canales <span id="arrow-${m.idEvent}" class="text-[10px] ml-1">►</span>
+            <!-- Derecha / Abajo en Móvil: Botones -->
+            <div class="flex items-center gap-2 w-full md:w-auto justify-end shrink-0 mt-2 md:mt-0 pt-2 md:pt-0 border-t md:border-t-0 border-[#212633]">
+              <button onclick="toggleChannels('${m.idEvent}')" class="btn-canales flex-1 md:flex-none text-[11px] md:text-[13px] px-2 md:px-3 py-1.5 md:py-1.5">
+                Canales <span id="arrow-${m.idEvent}" class="text-[9px] ml-0.5 md:ml-1">►</span>
               </button>
-              <button onclick="playStream('${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.options[0]?.url || '')}')" class="btn-play">
+              <button onclick="playStream('${escapeQuotes(m.strEvent)}', '${escapeQuotes(m.options[0]?.url || '')}')" class="btn-play flex-1 md:flex-none text-[11px] md:text-[13px] px-2 md:px-3.5 py-1.5 md:py-1.5">
                 Ver en Vivo
               </button>
             </div>
           </div>
 
           <!-- Acordeón de canales -->
-          <div id="channels-${m.idEvent}" class="hidden mt-4 pt-4 border-t border-[#212633] w-full">
-            <div class="flex justify-between items-center text-[11px] font-bold uppercase mb-3">
-              <span class="text-gray-500">CANALES Y ENLACES OFICIALES:</span>
-              <span class="text-gray-500">EMISIÓN EN DIRECTO</span>
+          <div id="channels-${m.idEvent}" class="hidden mt-3 md:mt-4 pt-3 md:pt-4 border-t border-[#212633] w-full">
+            <div class="flex justify-between items-center text-[9px] md:text-[11px] font-bold uppercase mb-2 md:mb-3">
+              <span class="text-gray-500">CANALES OFICIALES:</span>
+              <span class="text-gray-500 hidden sm:inline">EMISIÓN EN DIRECTO</span>
             </div>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-1.5 md:gap-2">
               ${channelsHtml}
             </div>
           </div>
